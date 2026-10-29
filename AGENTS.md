@@ -62,6 +62,7 @@ This static site is a prototype for planning, content and team review. The real 
 
 - `[TBD: ...]` marks content the team must supply and `[VERIFY: ...]` marks conflicting facts on the current site. Both render highlighted; leave them until resolved.
 - No emoji, em dashes, arrows or decorative glyphs in page copy.
+- **Name the college "WSU Engineering and Architecture"** in page copy, not "Voiland" or "Voiland College". Keep official and proper names as they are: "Voiland College of Engineering and Architecture" (footer address), the "Gene and Linda Voiland School of Chemical Engineering and Bioengineering", "Voiland Peer Network", "Voiland College Shops", and titles of cited source pages.
 - Style: WSU look (crimson `#A60F2D`, bright crimson `#CA1237`, ink `#262626`, light gray `#F2F2F2`, Montserrat). Light mode only.
 - Menus collapsible; keep the Home page usable without scrolling on a laptop screen.
 

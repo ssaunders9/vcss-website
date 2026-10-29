@@ -49,7 +49,7 @@ L = lambda u, t: f'<a href="{u}">{t}</a>'
 PERSON = "person-placeholder.svg"
 
 # ---------- global ----------
-SITE_TITLE = "Voiland College Student Resources"
+SITE_TITLE = "WSU Engineering and Architecture Student Resources"
 BYLINE = "Provided by the VCEA Student Success Team"
 NAV = [("Academic Help", "academic-help"), ("First-Year & Transfer", "first-year-transfer"),
        ("Careers & Internships", "careers"), ("Paying for School", "paying-for-school"),
@@ -128,7 +128,7 @@ page("academic-help/advising", "Academic Advising", "academic-help",
 page("academic-help/tutoring", "Tutoring", "academic-help",
      "Free drop-in, one-on-one peer tutoring for VCEA courses. No appointment needed.",
      ("See today's tutors", "https://tutoring.wsu.edu/"), "Bowers Tutoring Center, Schweitzer Engineering Hall (SEH) 130, Monday to Friday, times vary by course (see tutor schedule), Closed when WSU is not holding classes.",
-     sec("How it works", p("Walk in, no appointment. Tutors are trained Voiland College students who have already passed the course they tutor. Stop by early in the semester to see the space and the tutor schedules posted on the wall."))
+     sec("How it works", p("Walk in, no appointment. Tutors are trained WSU Engineering and Architecture students who have already passed the course they tutor. Stop by early in the semester to see the space and the tutor schedules posted on the wall."))
      + sec("What to bring", ul(["Textbook and notes", "The assignment you are working on", "A scientific calculator", "Specific questions, so the tutor knows where you are stuck"]))
      + sec("Holiday schedule", p("Tutoring runs only on days WSU holds classes, so it is closed on holidays such as Presidents' Day."))
      + sec("Courses we cover", p("[TBD: list or link]"))
@@ -152,7 +152,7 @@ page("academic-help/mentoring", "Mentoring", "academic-help",
      + "</div>")
 
 # 2. First-Year & Transfer
-page("first-year-transfer", "First-Year & Transfer", summary="Welcome to Voiland College. Start here.",
+page("first-year-transfer", "First-Year & Transfer", summary="Welcome to WSU Engineering and Architecture. Start here.",
      body=p("[TBD: welcome message]") + cards([
          ("First-Year Program", "ENGR 101/102 and first-year support.", "@@/first-year-transfer/first-year-program/", "Learn more"),
          ("Transfer Students", "Credits, advising, and getting connected.", "@@/first-year-transfer/transfer-students/", "Learn more"),
@@ -162,7 +162,7 @@ page("first-year-transfer/first-year-program", "First-Year Program (ENGR 101/102
      sec("What you'll do", p("[TBD]")) + sec("How it fits your major", p("[TBD]"))
      + sec("First-year support", ul(['<a href="@@/academic-help/tutoring/">Tutoring</a>', '<a href="@@/academic-help/mentoring/">Voiland Peer Network</a>', '<a href="@@/academic-help/advising/">Advising</a>'])),
      contact("[TBD: First-Year Programs lead]", None, "[TBD]", "[TBD]"))
-page("first-year-transfer/transfer-students", "Transfer Students", "first-year-transfer", "Everything you need to land smoothly at Voiland College.", None, None,
+page("first-year-transfer/transfer-students", "Transfer Students", "first-year-transfer", "Everything you need to land smoothly at WSU Engineering and Architecture.", None, None,
      sec("Transferring credits and equivalencies", p("[TBD]")) + sec("Meet your advisor", p('<a href="@@/academic-help/advising/">Academic Advising</a>'))
      + sec("Peer Network for transfers", p('<a href="@@/academic-help/mentoring/">Voiland Peer Network</a>'))
      + sec("Getting involved quickly", ul(['<a href="@@/get-involved/clubs/">Clubs</a>', '<a href="@@/get-involved/maker-spaces/">FIZ</a>'])),
@@ -173,7 +173,7 @@ page("first-year-transfer/new-student-checklist", "New Student Checklist", "firs
          '<a href="#">Create your Handshake profile</a>', '<a href="@@/wellness/">Visit the Wellness Center</a> and <a href="@@/get-involved/maker-spaces/">FIZ</a>']))
 
 # 3. Careers
-page("careers", "Careers & Internships", summary="Career coaching, internships, career fairs, and job search tools for Voiland College students.",
+page("careers", "Careers & Internships", summary="Career coaching, internships, career fairs, and job search tools for WSU Engineering and Architecture students.",
      button=("Book a career coach", COACH_BOOK),
      where="SEH Welcome Center, Room 102, 150 SE Spokane St. [VERIFY: Mentoring page still says Dana 140], Peer Career Guide drop-ins: Mon 2–3, Tue 12–1, Wed 3–4, Thu 12–1, Fri 2–3",
      body=p("<strong>Who we serve:</strong> In-person support for Pullman and Bremerton students; remote support for students at other WSU campuses.")
@@ -225,11 +225,11 @@ page("careers/blog", "Careers Blog", "careers", "Tips and news from Career Servi
 
 # 4. Paying
 page("paying-for-school", "Paying for School", summary="Scholarships and emergency aid.",
-     body=cards([("Scholarships", "One application for most Voiland College scholarships.", "@@/paying-for-school/scholarships/", "Learn more"),
+     body=cards([("Scholarships", "One application for most WSU Engineering and Architecture scholarships.", "@@/paying-for-school/scholarships/", "Learn more"),
                  ("Emergency Aid", "Help when something unexpected happens.", "@@/paying-for-school/emergency-aid/", "Learn more")], "card-money.svg")
      + p('<a href="#">WSU Financial Aid</a>'))
 page("paying-for-school/scholarships", "Scholarships", "paying-for-school",
-     "One application (the WSU General Scholarship Application) puts you in the running for most Voiland College scholarships.",
+     "One application (the WSU General Scholarship Application) puts you in the running for most WSU Engineering and Architecture scholarships.",
      ("Apply at WSU Scholarships", "#"), "Priority deadline: January 31, [TBD: year]",
      sec("Featured scholarships", ul(["Distinguished Dean's Scholarship", "Dean's Scholarship", "WUEE Scholarship"]))
      + sec("School and department scholarships", p("[TBD: links]")) + sec("External opportunities", p("[TBD]")),
@@ -243,7 +243,7 @@ page("get-involved", "Get Involved", summary="Clubs, making, entrepreneurship, a
      body=cards([("Student Clubs", "40+ clubs.", "@@/get-involved/clubs/", "Browse"), ("Maker Spaces & FIZ", "Build something.", "@@/get-involved/maker-spaces/", "Explore"),
                  ("Entrepreneurship", "Frank Institute.", "@@/get-involved/entrepreneurship/", "Learn more"), ("Events", "What's coming up.", "@@/get-involved/events/", "See events"),
                  ("Student Spotlights", "Meet your peers.", "@@/get-involved/spotlights/", "Read")], "card-involved.svg"))
-page("get-involved/clubs", "Student Clubs", "get-involved", "40+ Voiland College student clubs, from design teams to professional societies.", ("Browse clubs", "#directory"), None,
+page("get-involved/clubs", "Student Clubs", "get-involved", "40+ WSU Engineering and Architecture student clubs, from design teams to professional societies.", ("Browse clubs", "#directory"), None,
      '<section id="directory"><h2>Club directory</h2>' + p("[TBD: filterable list: name, type, major, contact]")
      + table(["Club", "Type", "Major", "Contact"], [["[TBD]", "[TBD]", "[TBD]", "[TBD]"]]) + "</section>"
      + sec("How to join", p("[TBD]")) + sec("Start a new club", p("[TBD]"))
@@ -259,10 +259,10 @@ page("get-involved/events", "Events", "get-involved", "Student events and signat
      p("[TBD: auto-feed of student events; hide when empty]")
      + cards([("Ice Cream Socials", "[TBD: dates]", "#", "Details"), ("Senior Capstone Expo", "April 15, [TBD: year/location]", "#", "Details"),
               ("Engineering Innovation Expo", "[TBD: date]", "#", "Details"), ("Career Fairs", "Dates and prep.", "@@/careers/career-fairs/", "See fairs")]))
-page("get-involved/spotlights", "Student Spotlights", "get-involved", "Stories from Voiland College students.", ("Nominate a student", "#"), None, p("[TBD: category feed]"))
+page("get-involved/spotlights", "Student Spotlights", "get-involved", "Stories from WSU Engineering and Architecture students.", ("Nominate a student", "#"), None, p("[TBD: category feed]"))
 
 # 6. Wellness
-page("wellness", "Wellness", summary="A free space in Voiland College to relax, recharge, or talk with a trained peer supporter.",
+page("wellness", "Wellness", summary="A free space for WSU Engineering and Architecture students to relax, recharge, or talk with a trained peer supporter.",
      where="Daggy Hall [VERIFY: 101 vs. 130/133], Monday to Friday, 9 a.m. to 4 p.m., Closed weekends and holidays",
      body='<div class="crisis" role="note"><strong>In crisis?</strong> Call or text <a href="tel:988">988</a>, Emergencies <a href="tel:911">911</a>, After-hours counseling <a href="tel:5093352159">(509) 335-2159</a></div>'
      + sec("Wellness Rooms", ul(["Relaxation Room", "Art Room", "Game Room"])) + sec("How to use the center", p("[TBD: QR check-in steps]"))
@@ -291,13 +291,13 @@ page("about/locations", "Locations & Hours", "about", "The single source of trut
      + sec("Map", '<div class="map-slot">[TBD: map embed]</div>') + sec("Mailing addresses", p("PO Box 642250, Pullman, WA 99164-2250. Career Services mailing: PO Box 642718, Pullman, WA 99164-2718. Club package address: [TBD]")))
 
 # Secondary audiences
-page("employers", "Employers", summary="Recruit Voiland College students.",
+page("employers", "Employers", summary="Recruit WSU Engineering and Architecture students.",
      body=ul(["Register for career fairs", "Post jobs (Handshake)", "Host a ProPEL intern (employer Qualtrics form)", "Professional Applicant Profile Portal", "Sponsor a club or Expo"]),
      contact_card=contact("Career Services", None, "vcea.internships@wsu.edu", "509-335-8726"))
 page("faculty-staff", "Faculty & Staff", summary="Ways to connect your students with support.",
      body=sec("Refer a student (EARS)", p("Early Academic Referral System. What happens after a referral: [TBD]")) + sec("Request a classroom presentation", p("Career, wellness, tutoring. [TBD: form]"))
      + sec("Refer students to tutoring", p("[TBD]")) + sec("Capstone and Expo involvement", p("[TBD]")), contact_card=contact("[TBD]", None, "[TBD]"))
-page("club-advisors", "Club Advisors & Officers", summary="Resources for running a Voiland College club.",
+page("club-advisors", "Club Advisors & Officers", summary="Resources for running a WSU Engineering and Architecture club.",
      body=sec("Club governance and home-unit model", p("[TBD]")) + sec("Club Safety Manual and liability forms", p("[TBD: when finalized]"))
      + sec("Purchasing process", p("[TBD]")) + sec("Funding and RSO status", p("[TBD]")) + sec("Mailing packages and correspondence addresses", p("[TBD]")),
      contact_card=contact("Club Hub", None, "vcea.studentclubs@wsu.edu"))
@@ -318,16 +318,16 @@ def club_table():
             + '<script>(function(){var i=document.getElementById("clubfilter");if(!i)return;i.addEventListener("input",function(){var q=i.value.toLowerCase();'
               'document.querySelectorAll("#clubs tbody tr").forEach(function(r){r.hidden=r.textContent.toLowerCase().indexOf(q)<0;});});})();</script>')
 
-page("get-involved/clubs", "Student Clubs", "get-involved", "More than 40 Voiland College clubs, from design teams to professional societies. All are open to any enrolled WSU student, with no experience needed.", ("Browse clubs", "#directory"), None,
+page("get-involved/clubs", "Student Clubs", "get-involved", "More than 40 WSU Engineering and Architecture clubs, from design teams to professional societies. All are open to any enrolled WSU student, with no experience needed.", ("Browse clubs", "#directory"), None,
      sec("Three ways to join", ol(["Email the club using the directory below.", "Search " + L("https://wsu.presence.io/", "WSU Presence") + " for club profiles and events. [VERIFY: link]", "Ask the Club Hub in SEH 202 or at " + mail("vcea.studentclubs@wsu.edu") + "."]))
      + '<section id="directory"><h2>Club directory</h2>' + club_table() + "<p><small>Student officer names are left out so the list does not go stale. Add them only if the clubs keep them current.</small></p></section>"
      + sec("Start a new club", p("[TBD: steps]. New clubs register as a WSU Registered Student Organization; see " + L("@@/club-advisors/", "Club Advisors & Officers") + ".")),
      contact("Gary Offerdahl", "Student Success Coordinator, Clubs and Events", "vcea.studentclubs@wsu.edu", "509-335-6643", "SEH 202A (Club Hub: SEH 202)"))
 
 page("club-advisors", "Club Advisors & Officers", summary="Everything a club needs to register, fund itself, promote events, and get mail.",
-     body=sec("Register or renew as an RSO", p("Voiland College clubs register or renew WSU Registered Student Organization status at the start of each fall semester. New clubs should register as soon as possible, because RSO training dates are limited. Not sure of your status? Email Student Engagement Services at " + mail("getinvolved@wsu.edu") + "."))
+     body=sec("Register or renew as an RSO", p("WSU Engineering and Architecture clubs register or renew WSU Registered Student Organization status at the start of each fall semester. New clubs should register as soon as possible, because RSO training dates are limited. Not sure of your status? Email Student Engagement Services at " + mail("getinvolved@wsu.edu") + "."))
      + sec("Funding", p("Student Engagement Services runs the club funding opportunities. Purchase, food and travel requests go through the college's club purchasing system. [TBD: link and current steps]"))
-     + sec("Promote your club", details("Digital signage on Voiland College monitors", ol(["Design the flyer at 16:9 (PowerPoint) proportions.", "Add a QR code to a page with dates and details, so one flyer works all term.", "Tell us the date to take it down.", "Say whether you want it printed for physical flyer boards (up to 20 prints per club)."]) + p("Email the flyer to " + mail("vcea.studentclubs@wsu.edu") + "."))
+     + sec("Promote your club", details("Digital signage on WSU Engineering and Architecture monitors", ol(["Design the flyer at 16:9 (PowerPoint) proportions.", "Add a QR code to a page with dates and details, so one flyer works all term.", "Tell us the date to take it down.", "Say whether you want it printed for physical flyer boards (up to 20 prints per club)."]) + p("Email the flyer to " + mail("vcea.studentclubs@wsu.edu") + "."))
            + details("WSU marketing resources", p("RSOs can use WSU design and printing services. [TBD: link]")))
      + sec("Reserve a room", p("Book a WSU classroom for meetings and events. [TBD: link]"))
      + sec("Safety manual and liability forms", p("[TBD: when finalized]"))
@@ -347,7 +347,7 @@ page("get-involved/maker-spaces", "Maker Spaces & FIZ", "get-involved", "Three p
      + "</div>",
      contact("Miles Pepper", "[VERIFY: the staff directory lists Maynard Siev as FIZ Manager, Dana Hall 15, maynard.siev@wsu.edu, 509-335-7229]", "mpepper@wsu.edu", "509-335-8550", "Dana 46"))
 
-page("wellness", "Wellness", summary="A free space in Voiland College to relax, recharge, or talk with a trained peer supporter. It is not therapy or long-term counseling.",
+page("wellness", "Wellness", summary="A free space for WSU Engineering and Architecture students to relax, recharge, or talk with a trained peer supporter. It is not therapy or long-term counseling.",
      where="Daggy Hall 101, Monday to Friday, 9 a.m. to 4 p.m. Closed weekends, university holidays and closures. After hours, call (509) 335-2159 for Counseling and Psychological Services.",
      body='<div class="crisis" role="note"><strong>In crisis?</strong> Call or text <a href="tel:988">988</a>, call <a href="tel:911">911</a>, or go to your nearest emergency room. After-hours counseling: <a href="tel:5093352159">(509) 335-2159</a></div>'
      + sec("Wellness rooms", '<div class="cards">'
@@ -374,7 +374,7 @@ page("paying-for-school/scholarships", "Scholarships", "paying-for-school",
 page("get-involved/entrepreneurship", "Entrepreneurship", "get-involved", "The Harold Frank Engineering Entrepreneurship Institute brings engineering, business and communications students together to build technology ventures.",
      ("Visit the Frank Institute", "#"), None, p("[TBD: competitions, funding, mentoring details]"))
 
-page("get-involved/spotlights", "Student Spotlights", "get-involved", "Stories from Voiland College students.", ("Nominate a student", "#"), None,
+page("get-involved/spotlights", "Student Spotlights", "get-involved", "Stories from WSU Engineering and Architecture students.", ("Nominate a student", "#"), None,
      ul(["Betty Mitchell, civil engineering", "Alex Brown, materials science", "Connor Reschke, civil engineering", "Lauren Hoyt, Wings Club Scholarship recipient", "Trinity Middleton, materials science and engineering", "Ashley McCoy, architectural studies", "David Montes-Vilanova, computer science", "Brian Romero Gomez, mechanical engineering", "Brandon Swinger, civil engineering"])
      + p("[TBD: link each name to its story and add photos]"))
 
@@ -385,7 +385,7 @@ page("faculty-staff", "Faculty & Staff", summary="Ways to connect your students 
      + sec("Refer students to tutoring", p("Send them to " + L("@@/academic-help/tutoring/", "Tutoring") + " in SEH 130."))
      + sec("Capstone and Expo involvement", p("[TBD]")), contact_card=contact("Student Success", None, "vcea.info@wsu.edu", "509-335-5050"))
 
-page("employers", "Employers", summary="Recruit Voiland College students.", button=("Post jobs on Handshake", "https://wsu.joinhandshake.com/"),
+page("employers", "Employers", summary="Recruit WSU Engineering and Architecture students.", button=("Post jobs on Handshake", "https://wsu.joinhandshake.com/"),
      body=sec("Interview on campus or online", p("Career Services provides interview space on the Pullman campus. Schedule on-campus and virtual interviews through Handshake."))
      + sec("Host an event", p("Request an information session, pre-interview night, table in a high-traffic area, coffee chat, virtual tour or networking night through Handshake. For on-campus events the Employer Relations Team follows up on space and parking."))
      + sec("Recruit at college events", p("Career Expo each fall and spring, the Career Networking Mixer, and club-sponsored Evening with Industry events."))
@@ -425,7 +425,7 @@ page("careers/toolkit/job-search", "Job & Internship Search", "careers/toolkit",
 
 page("careers/career-fairs", "Career Fairs", "careers", "Meet employers, practice your pitch, and find your next internship.", ("Register for the Career Expos", "https://ascc.wsu.edu/resources/wsu-career-expos/"), None,
      sec("Upcoming fairs", p("No fairs listed yet. [TBD: spring 2027 dates, one Handshake link per fair. Fall 2026 fairs, the Sept 9 Internship Pop-Up and the Oct 6 Technical Fair, are past.]"))
-     + sec("What to expect", p("WSU Career Expos run every fall and spring through the Academic Success and Career Center, and Voiland College hosts a Technical Fair. The Virtual Expo runs on Handshake with group sessions and one-on-one chats with recruiters. It is an introduction, not an interview. Freshmen are welcome and encouraged to come."))
+     + sec("What to expect", p("WSU Career Expos run every fall and spring through the Academic Success and Career Center, and WSU Engineering and Architecture hosts a Technical Fair. The Virtual Expo runs on Handshake with group sessions and one-on-one chats with recruiters. It is an introduction, not an interview. Freshmen are welcome and encouraged to come."))
      + sec("Prepare in 5 steps", ol(["Update your résumé and get it reviewed in SEH 102", "Complete your Handshake profile", "Pick the employers you want to meet and read up on them", "Practice a 30-second introduction", "Plan your outfit"]))
      + sec("At the fair", ul(["Arrive early and start with shorter lines.", "Shake hands, introduce yourself and hand over your résumé.", "Ask about the application process and collect a contact name from everyone you meet.", "Be considerate of the students waiting behind you.", "Skip salary and benefits questions."]))
      + sec("Good questions to ask", ul(["What do you look for in candidates?", "What training is there for entry-level hires?", "What assignments would I get?", "What skills matter most for success here?"]))
@@ -462,7 +462,7 @@ PAGES["careers"]["contact"] = contact("Lisa Hathaway", "Director, Internships an
 
 
 VISIT_MAIL = "VCEA.Recruiting@wsu.edu"
-page("visit", "Visit Voiland College", summary="Prospective students: come see the college. Sign up for a visit by email.",
+page("visit", "Visit WSU Engineering and Architecture", summary="Prospective students: come see the college. Sign up for a visit by email.",
      button=("Email to sign up", "mailto:" + VISIT_MAIL), 
      where="Noon visit: Monday through Saturday. 2:30 pm visit: Fridays only. Pacific time. Meeting spot: [TBD: building and room].",
      body=sec("Pick a time", table(["Visit", "Days"], [["12:00 pm (noon)", "Monday through Saturday"], ["2:30 pm", "Fridays only"]]))
@@ -629,7 +629,7 @@ def owner_of(slug): return OWNERS[max((k for k in OWNERS if slug == k or slug.st
 
 
 # ---------- build-out of thin pages (facts from the content capture and VCEA program documents) ----------
-page("first-year-transfer", "First-Year & Transfer", summary="Welcome to Voiland College. Here is how to get started, whether you came straight from high school or transferred in.",
+page("first-year-transfer", "First-Year & Transfer", summary="Welcome to WSU Engineering and Architecture. Here is how to get started, whether you came straight from high school or transferred in.",
      body=cards([("First-Year Program", "ENGR 101 and 102: your first courses in the college.", "@@/first-year-transfer/first-year-program/", "Learn more"),
                  ("Transfer Students", "Credits, advising and getting connected fast.", "@@/first-year-transfer/transfer-students/", "Learn more"),
                  ("New Student Checklist", "What to do before classes and in your first month.", "@@/first-year-transfer/new-student-checklist/", "Open checklist")], "card-firstyear.svg")
@@ -640,7 +640,7 @@ page("first-year-transfer", "First-Year & Transfer", summary="Welcome to Voiland
      + sec("Questions?", p("First-year students: Kimberlee Hughes, " + mail("kimberlee.hughes@wsu.edu") + ". Transfer students: Alena Hume, " + mail("alena.hume@wsu.edu") + ".")))
 
 page("first-year-transfer/first-year-program", "First-Year Program (ENGR 101/102)", "first-year-transfer",
-     "ENGR 101 and ENGR 102 are Voiland College's first-year courses, part of the First Year Inquiry (FYI) program. They introduce the college's support services, the skills engineering students need, and the range of majors you can choose from.", None, None,
+     "ENGR 101 and ENGR 102 are WSU Engineering and Architecture's first-year courses, part of the First Year Inquiry (FYI) program. They introduce the college's support services, the skills engineering students need, and the range of majors you can choose from.", None, None,
      sec("The courses", table(["Course", "Theme", "What you do"], [
          ["ENGR 101", "Starting your engineering portfolio", "Make the move from high school to engineering: WSU resources, study habits and your first résumé"],
          ["ENGR 102", "Filling your engineering portfolio", "Explore the disciplines and majors and build your portfolio with projects"],
@@ -657,7 +657,7 @@ page("first-year-transfer/first-year-program", "First-Year Program (ENGR 101/102
      contact("Kimberlee Hughes", "Instructor, First-Year Engineering", "kimberlee.hughes@wsu.edu", "509-335-2888", "SEH 126E"))
 
 page("first-year-transfer/transfer-students", "Transfer Students", "first-year-transfer",
-     "Transferring into Voiland College? Start with the transfer coordinator, check how your credits came in, and get connected in your first weeks.", None, None,
+     "Transferring into WSU Engineering and Architecture? Start with the transfer coordinator, check how your credits came in, and get connected in your first weeks.", None, None,
      sec("Your first steps", ol(["Meet the transfer coordinator, Alena Hume, to review your plan.",
                                  "Open your Academic Requirements report in myWSU and check how each transfer course was counted.",
                                  "If a course did not transfer the way you expected, bring its syllabus to the transfer coordinator. [VERIFY: review process]",
@@ -686,7 +686,7 @@ page("first-year-transfer/new-student-checklist", "New Student Checklist", "firs
 page("paying-for-school/emergency-aid", "Emergency Aid", "paying-for-school",
      "Help for an unexpected cost that puts your classes at risk. [TBD: final wording once the VCEA emergency scholarship policy is approved]",
      ("Ask for emergency aid", "mailto:vcea.info@wsu.edu?subject=Emergency%20aid%20request"), None,
-     sec("Who can ask", p("Voiland College students facing a sudden, one-time expense. [TBD: eligibility from the policy]"))
+     sec("Who can ask", p("WSU Engineering and Architecture students facing a sudden, one-time expense. [TBD: eligibility from the policy]"))
      + sec("What it can help with", p("[TBD: covered costs from the policy]. If you are not sure whether your situation fits, ask anyway."))
      + sec("How to ask", ol(["Email " + mail("vcea.info@wsu.edu") + " with “Emergency aid” in the subject.", "Say briefly what happened, what it costs, and when you need the money.",
                             "Someone from Student Success will contact you. [TBD: response time]"]))
@@ -705,7 +705,7 @@ page("get-involved/entrepreneurship", "Entrepreneurship", "get-involved",
      + sec("Related", ul([L("@@/get-involved/clubs/", "Student clubs") + " for teammates and projects", L("@@/careers/", "Career Services") + " for startup internships"])),
      contact("Frank Institute", "[TBD: contact name]", "[TBD]"))
 
-page("get-involved/events", "Events", "get-involved", "Signature Voiland College events through the year, plus the live events feed.", None, None,
+page("get-involved/events", "Events", "get-involved", "Signature WSU Engineering and Architecture events through the year, plus the live events feed.", None, None,
      cards([("Innovation Expo", "Each spring, clubs show their projects in Beasley Coliseum. Judges give a Dean's Award to the club that best represents the college, presented at the Student Excellence Awards. 2027 date: [TBD]", "#", "Details"),
             ("Senior Capstone Expo", "Seniors present their capstone design projects. April 15, [TBD: year and location]", "#", "Details"),
             ("Career Fairs", "WSU Career Expos each fall and spring, plus the Technical Fair.", "@@/careers/career-fairs/", "See fairs"),
@@ -730,7 +730,7 @@ SPOTLIGHTS = [("Betty Mitchell", "Civil engineering", "Graduating December 2026"
               ("Lauren Hoyt", "Wings Club Scholarship recipient", ""), ("Trinity Middleton", "Materials science and engineering", "Graduating May 2029"),
               ("Ashley McCoy", "Architectural studies", "Graduating May 2028"), ("David Montes-Vilanova", "Computer science", "Graduating May 2028"),
               ("Brian Romero Gomez", "Mechanical engineering", "Graduating May 2027")]
-page("get-involved/spotlights", "Student Spotlights", "get-involved", "Voiland College students on what has helped them succeed.", ("Nominate a student", "#nominate"), None,
+page("get-involved/spotlights", "Student Spotlights", "get-involved", "WSU Engineering and Architecture students on what has helped them succeed.", ("Nominate a student", "#nominate"), None,
      person_grid([(n, m, (g + ". " if g else "") + "[TBD: link to story]", "spotlight-placeholder.svg") for n, m, g in SPOTLIGHTS])
      + '<section id="nominate"><h2>Nominate a student</h2>' + p("Know a student whose story would help others? Send their name, major and a sentence about why to " + mail("vcea.info@wsu.edu") + ". [TBD: nomination form]") + "</section>")
 
@@ -745,9 +745,9 @@ PAGES["faculty-staff"]["body"] = (
     + PAGES["faculty-staff"]["body"].split("<section><h2>Refer a student (EARS)</h2>", 1)[1].split("</section>", 1)[1])
 
 # Short intros and most-asked links on the landing pages
-PAGES["paying-for-school"]["body"] = p("Most Voiland College scholarships come from one application, due January 31. For a sudden expense, ask for emergency aid.") + PAGES["paying-for-school"]["body"]
+PAGES["paying-for-school"]["body"] = p("Most WSU Engineering and Architecture scholarships come from one application, due January 31. For a sudden expense, ask for emergency aid.") + PAGES["paying-for-school"]["body"]
 PAGES["get-involved"]["body"] = p("Clubs, maker spaces and events are where most students find their people and their first real projects. Every club is open to any enrolled WSU student.") + PAGES["get-involved"]["body"]
-PAGES["about"]["body"] = (p("The Student Success team runs advising support, tutoring, career services, clubs, the FIZ and the Wellness Center for Voiland College students.") + PAGES["about"]["body"]
+PAGES["about"]["body"] = (p("The Student Success team runs advising support, tutoring, career services, clubs, the FIZ and the Wellness Center for WSU Engineering and Architecture students.") + PAGES["about"]["body"]
                           + sec("Fastest ways to reach us", ul([mail("vcea.info@wsu.edu"), tel("509-335-5050"), L("@@/what-to-do/", "What to do if you are stuck")])))
 PAGES["careers/toolkit"]["body"] = p("Start with your résumé, practice for interviews, then use the search tools. Any time you want feedback, book a coach or drop in at SEH 102.") + PAGES["careers/toolkit"]["body"]
 OWNERS.update({"first-year-transfer": "First-Year Programs", "first-year-transfer/transfer-students": "Advising", "paying-for-school": "Student Success",
@@ -842,7 +842,7 @@ FED_CAT = {"Electrical Engineering": "Electrical, Electronics, and Communication
 
 PAYS = [223, 219, 233, 203, 250, 267, 222]   # WSU median monthly federal loan payment: ME, CE, EE, CS, CompE, ChE, Construction (Scorecard)
 
-page("cost-and-value", "Why Voiland College Costs Less", summary=(
+page("cost-and-value", "Why WSU Costs Less", summary=(
      "Whether you live in Washington or another state, a year at WSU costs less than at the Seattle flagship or the Oregon land-grant, and WSU engineers start at about the same salaries."),
      button=("Plan a visit", "@@/visit/"),
      body='<div class="stat-row">'
@@ -875,13 +875,13 @@ page("cost-and-value", "Why Voiland College Costs Less", summary=(
                 [[m, win(usd(w)), rv(usd(u)), og(usd(o))] for m, w, u, o in THREE_MAJORS])
            + p("In mechanical, civil and electrical engineering, WSU graduates start within about 2 percent of both schools, and ahead of Oregon in mechanical and civil, after paying less to get there.")
            + src(SC_W, SC_U, SC_O, note="Median earnings one year after graduating, 2020-21 and 2021-22 graduates who received federal aid and were working, in 2024 dollars"))
-     + sec("Voiland College graduates start strong", table(["Major", "Median earnings, first year out"],
+     + sec("WSU Engineering and Architecture graduates start strong", table(["Major", "Median earnings, first year out"],
                 [[m + (f'<br><small>Federal category: {FED_CAT[m]}</small>' if m in FED_CAT else ""), usd(e)] for m, _, e, _, _ in SC_MAJORS if m != "Architecture"])
            + p("Pell Grant recipients earn the same as everyone else: in mechanical engineering, $78,564 for Pell recipients compared with $78,276 overall.")
            + p(f"Median monthly federal loan payments for WSU graduates in these majors run from {usd(min(PAYS))} to {usd(max(PAYS))}, on a standard 10-year plan.")
            + src(SC_W, note="Earnings: 2020-21 and 2021-22 graduates, one year after graduating, in 2024 dollars. Loan payments: 2022-23 and 2023-24 graduates"))
      + sec("Out-of-state? It gets better", p(f"WSU's out-of-state tuition and fees are already {usd(GAP_TUIT_OUT)} a year below the Seattle flagship's and {usd(CN['ore']['tuition_out'] - CN['wsu']['tuition_out'])} below the Oregon land-grant's (2024-25). "
-                                              "Students from Western Undergraduate Exchange states can add the WUE Distinguished Cougar Award and Voiland College's $2,000-a-year WUEE Scholarship, which together close the gap between in-state and out-of-state tuition. [VERIFY: amounts for 2027-28]")
+                                              "Students from Western Undergraduate Exchange states can add the WUE Distinguished Cougar Award and WSU Engineering and Architecture's $2,000-a-year WUEE Scholarship, which together close the gap between in-state and out-of-state tuition. [VERIFY: amounts for 2027-28]")
            + src(CN_W, CN_U, CN_O, ("Voiland College scholarships", VCEA_SCHOLARSHIPS_URL), ("WICHE: Western Undergraduate Exchange", WUE_URL)))
      + sec("Scholarships from one application", ul(["<strong>Distinguished Dean's Scholarship:</strong> full tuition, renewable for up to four years",
                                                     "<strong>Dean's Scholarship:</strong> more than 300 awarded every year to new first-year and transfer students",
@@ -889,7 +889,7 @@ page("cost-and-value", "Why Voiland College Costs Less", summary=(
            + p("One form, the WSU General Scholarship Application, covers all three. Priority deadline: January 31.")
            + src(("Voiland College scholarships", VCEA_SCHOLARSHIPS_URL)))
      + sec("More students get their shot", p(f"WSU admits {CN['wsu']['admit']} percent of applicants, compared with {rv(str(CN['sea']['admit']) + ' percent')} at the Seattle flagship and {og(str(CN['ore']['admit']) + ' percent')} at the Oregon land-grant. "
-                                             "At Voiland College, first-year students start in the college right away, with ENGR 101 and 102 and free tutoring from day one.")
+                                             "At WSU Engineering and Architecture, first-year students start in the college right away, with ENGR 101 and 102 and free tutoring from day one.")
            + src(CN_W, CN_U, CN_O, ("First-Year Program", "@@/first-year-transfer/first-year-program/")))
      + sec("Earn while you learn", ul(["<strong>ProPEL:</strong> earn credit for paid internships and co-ops while staying a full-time student. " + L("@@/careers/internships-propel/", "ProPEL"),
                                        "<strong>Micro-internships:</strong> paid short projects through Parker Dewey, often remote.",
@@ -913,8 +913,8 @@ page("cost-and-value", "Why Voiland College Costs Less", summary=(
 KEYWORDS["cost-and-value"] = "uw udub husky huskies seattle university washington compare comparison cost costs tuition price afford affordable net price sticker out-of-state wue salary salaries earnings debt loans value worth roi compare"
 OWNERS["cost-and-value"] = "Recruiting"
 UTIL.insert(1, ("Cost and Value", "cost-and-value"))
-PAGES["visit"]["body"] = PAGES["visit"]["body"] + sec("Wondering about cost?", p("See what families actually pay and what graduates earn: " + L("@@/cost-and-value/", "Why Voiland College Costs Less") + "."))
-PAGES["paying-for-school"]["body"] = PAGES["paying-for-school"]["body"] + p("Comparing schools? See " + L("@@/cost-and-value/", "what Voiland College really costs") + ".")
+PAGES["visit"]["body"] = PAGES["visit"]["body"] + sec("Wondering about cost?", p("See what families actually pay and what graduates earn: " + L("@@/cost-and-value/", "Why WSU Costs Less") + "."))
+PAGES["paying-for-school"]["body"] = PAGES["paying-for-school"]["body"] + p("Comparing schools? See " + L("@@/cost-and-value/", "what WSU really costs") + ".")
 
 REDIRECTS = [("/advising/", "academic-help/advising"), ("/tutoring/", "academic-help/tutoring"), ("/tutoring/tutoring-schedule/", "academic-help/tutoring"),
  ("/tutoring/meet-your-tutors/", "academic-help/tutoring"), ("/mentorship-programs/", "academic-help/mentoring"), ("/internships-careers/", "careers"),
@@ -958,7 +958,7 @@ def layout(slug, title, main, crumbs=""):
 <body><a class="skip" href="#main">Skip to content</a>
 <div class="wsu-bar"><div><span>Washington State University</span><ul>{util}</ul></div></div>
 <header class="site-header">
- <div class="brand"><div class="titles"><span class="kicker">Voiland College of Engineering and Architecture</span><a class="site-title" href="{base or './'}">{SITE_TITLE}</a><span class="byline">{BYLINE}</span></div>
+ <div class="brand"><div class="titles"><span class="kicker">Washington State University</span><a class="site-title" href="{base or './'}">{SITE_TITLE}</a><span class="byline">{BYLINE}</span></div>
   <form class="search" role="search" action="{base}search/" method="get"><label class="sr" for="q">Search</label><input id="q" name="q" type="search" placeholder="Search"><button>Search</button></form>
   <button type="button" class="menu-toggle" aria-expanded="false" aria-controls="menu" aria-label="Open menu"></button></div>
  <nav aria-label="Primary" id="primary"><button type="button" class="menu-close">Close Menu</button><ul id="menu">{nav}</ul><ul class="util-mobile">{util}</ul></nav>
@@ -1024,7 +1024,7 @@ def render_home():
              ('people', "Join a club", "40+ student clubs", "get-involved/clubs"),
              ('tool', "Build something", "FIZ and shops", "get-involved/maker-spaces"),
              ('heart', "Take a break", "Talk to someone at Wellness", "wellness"),
-             ('flag', "New to Voiland College?", "Start here", "first-year-transfer")]
+             ('flag', "New to WSU Engineering and Architecture?", "Start here", "first-year-transfer")]
     glance = '<ul class="today" aria-label="Today at a glance">' + "".join(
         f'<li><strong>{x["name"]}</strong>{status_span(x, x["place"] + ", ")}<a href="{x["link"][1]}">{x["link"][0]}</a></li>'
         for x in SERVICES if x.get("home")) + "</ul>"
