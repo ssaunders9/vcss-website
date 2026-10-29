@@ -259,7 +259,7 @@ th .rival{background:#4B2E83;color:#fff}
 .stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:8px 0 20px}
 .stat{background:#fff;border-top:6px solid var(--crimson);box-shadow:0 1px 4px rgba(0,0,0,.14);padding:16px 18px}
 .stat b{display:block;font-size:2rem;font-weight:800;color:var(--crimson);line-height:1.1}
-.stat span{font-size:.92rem}.stat .rival{font-size:.85rem}
+.stat span{font-size:.92rem}.stat em{display:block;font-style:normal;font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--gray);margin-bottom:4px}.stat .rival{font-size:.85rem}
 .src{font-size:.8rem;color:var(--gray);margin-top:6px}.src a{color:var(--gray)}
 @media (max-width:700px){.stat-row{grid-template-columns:1fr}}
 /* comparison school recedes: plain purple text, no fill; WSU wins carry the weight */

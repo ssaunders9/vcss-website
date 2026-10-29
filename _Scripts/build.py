@@ -843,20 +843,22 @@ FED_CAT = {"Electrical Engineering": "Electrical, Electronics, and Communication
 PAYS = [223, 219, 233, 203, 250, 267, 222]   # WSU median monthly federal loan payment: ME, CE, EE, CS, CompE, ChE, Construction (Scorecard)
 
 page("cost-and-value", "Why Voiland College Costs Less", summary=(
-     f"Save {usd(GAP_IN * 4)} over four years compared with the Seattle flagship, and start at the same salaries in mechanical, civil and electrical engineering."),
+     "Whether you live in Washington or another state, a year at WSU costs less than at the Seattle flagship or the Oregon land-grant, and WSU engineers start at about the same salaries."),
      button=("Plan a visit", "@@/visit/"),
      body='<div class="stat-row">'
-          f'<div class="stat"><b>{usd(GAP_IN * 4)}</b><span>less to attend over four years, Washington residents</span></div>'
-          f'<div class="stat"><b>{usd(GAP_OUT)}</b><span>less every year for out-of-state students</span></div>'
-          f'<div class="stat"><b>{CN["wsu"]["admit"]}%</b><span>of applicants admitted, vs. {rv(str(CN["sea"]["admit"]) + "%")} in Seattle and {og(str(CN["ore"]["admit"]) + "%")} in Oregon</span></div></div>'
-          + src(CN_W, CN_U, CN_O, note=f"Published total cost for beginning students living on campus, 2024-25. Four-year savings = 4 x the {usd(GAP_IN)} yearly in-state difference. Admission rates, fall 2024")
-     + sec("Side by side: cost per year", table(["2024-25, living on campus", "WSU Pullman", rv("Seattle flagship"), og("Oregon land-grant")], [
-                ["Washington resident", win(usd(CN["wsu"]["total_in"])), cmp_cell(CN["sea"]["total_in"], CN["wsu"]["total_in"], rv),
-                 cmp_cell(CN["ore"]["total_out"], CN["wsu"]["total_in"], og) + f'<br><small>With WUE: {og("at least " + usd(CN["ore"]["total_in"]))}</small>'
-                 + f'<br><small class="saves">WSU saves at least {usd(CN["ore"]["total_in"] - CN["wsu"]["total_in"])}</small>'],
-                ["Out-of-state student, full price", win(usd(CN["wsu"]["total_out"])), cmp_cell(CN["sea"]["total_out"], CN["wsu"]["total_out"], rv), cmp_cell(CN["ore"]["total_out"], CN["wsu"]["total_out"], og)],
-                ["Out-of-state tuition and fees", win(usd(CN["wsu"]["tuition_out"])), cmp_cell(CN["sea"]["tuition_out"], CN["wsu"]["tuition_out"], rv), cmp_cell(CN["ore"]["tuition_out"], CN["wsu"]["tuition_out"], og)],
-                ["Food and housing", win(usd(CN["wsu"]["housing"])), cmp_cell(CN["sea"]["housing"], CN["wsu"]["housing"], rv), cmp_cell(CN["ore"]["housing"], CN["wsu"]["housing"], og)],
+          f'<div class="stat"><em>If you live in Washington</em><b>{usd(GAP_IN * 4)}</b><span>less over four years than the {rv("Seattle flagship")}</span></div>'
+          f'<div class="stat"><em>If you live in Washington</em><b>{usd((CN["ore"]["total_in"] - CN["wsu"]["total_in"]) * 4)}+</b><span>less over four years than the {og("Oregon land-grant")}, even with WUE</span></div>'
+          f'<div class="stat"><em>If you live in another state</em><b>{usd(GAP_OUT)}</b><span>less every year than the {rv("Seattle flagship")}, and {usd(CN["ore"]["total_out"] - CN["wsu"]["total_out"])} less than the {og("Oregon land-grant")}</span></div></div>'
+          + src(CN_W, CN_U, CN_O, note="Published total cost of attendance for beginning students living on campus, 2024-25. Four-year figures are 4 x the yearly difference")
+     + sec("What a year costs, by where you live", table(["2024-25 cost of attendance, living on campus", "WSU Pullman", rv("Seattle flagship"), og("Oregon land-grant")], [
+                ["<strong>You live in Washington</strong><br><small>WSU and Seattle charge you in-state prices. Oregon charges out-of-state prices.</small>",
+                 win(usd(CN["wsu"]["total_in"])) + "<br><small>in-state</small>",
+                 rv(usd(CN["sea"]["total_in"])) + "<br><small>in-state</small>" + f'<br><small class="saves">WSU saves {usd(CN["sea"]["total_in"] - CN["wsu"]["total_in"])}</small>',
+                 og(usd(CN["ore"]["total_out"])) + "<br><small>full out-of-state price</small>" + f'<br><small class="saves">WSU saves {usd(CN["ore"]["total_out"] - CN["wsu"]["total_in"])}</small>'
+                 + f'<br><small>With WUE: {og("at least " + usd(CN["ore"]["total_in"]))}</small>' + f'<br><small class="saves">WSU saves at least {usd(CN["ore"]["total_in"] - CN["wsu"]["total_in"])}</small>'],
+                ["<strong>You live in another state</strong><br><small>Not Washington or Oregon. Full out-of-state price at all three, before WUE and scholarships.</small>",
+                 win(usd(CN["wsu"]["total_out"])), cmp_cell(CN["sea"]["total_out"], CN["wsu"]["total_out"], rv), cmp_cell(CN["ore"]["total_out"], CN["wsu"]["total_out"], og)],
+                ["Food and housing<br><small>Part of the totals above, same for everyone</small>", win(usd(CN["wsu"]["housing"])), cmp_cell(CN["sea"]["housing"], CN["wsu"]["housing"], rv), cmp_cell(CN["ore"]["housing"], CN["wsu"]["housing"], og)],
                 ["Applicants admitted, fall 2024", win(f'{CN["wsu"]["admit"]}%'), rv(f'{CN["sea"]["admit"]}%'), og(f'{CN["ore"]["admit"]}%')]])
            + p(f"A Washington student pays {usd(CN['sea']['total_in'] - CN['wsu']['total_in'])} a year less at WSU than in Seattle, and {usd(CN['ore']['total_out'] - CN['wsu']['total_in'])} less than paying full out-of-state price in Oregon. "
                f"WUE tuition is 150 percent of in-state tuition, so even with WUE, Oregon costs at least its in-state budget of {usd(CN['ore']['total_in'])}: {usd(CN['ore']['total_in'] - CN['wsu']['total_in'])} more than WSU.")
@@ -1306,7 +1308,7 @@ th .rival{background:#4B2E83;color:#fff}
 .stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:8px 0 20px}
 .stat{background:#fff;border-top:6px solid var(--crimson);box-shadow:0 1px 4px rgba(0,0,0,.14);padding:16px 18px}
 .stat b{display:block;font-size:2rem;font-weight:800;color:var(--crimson);line-height:1.1}
-.stat span{font-size:.92rem}.stat .rival{font-size:.85rem}
+.stat span{font-size:.92rem}.stat em{display:block;font-style:normal;font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--gray);margin-bottom:4px}.stat .rival{font-size:.85rem}
 .src{font-size:.8rem;color:var(--gray);margin-top:6px}.src a{color:var(--gray)}
 @media (max-width:700px){.stat-row{grid-template-columns:1fr}}
 /* comparison school recedes: plain purple text, no fill; WSU wins carry the weight */
