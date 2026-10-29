@@ -37,6 +37,15 @@ Static site skeleton for the Voiland College Student Resources site (planned for
 
 **Remote**: `https://github.com/ssaunders9/vcss-website` (public). Pushes to `main` deploy `site/` to GitHub Pages via `.github/workflows/pages.yml`.
 
+## Target platform: WSU WordPress
+
+This static site is a prototype for planning, content and team review. The real site will most likely be built in WSU's WordPress (WSU Web Design System theme, where `vcea.wsu.edu/student-success/` lives). So:
+
+- Each page here should map to one WordPress page, and each component to a WSU design-system block or pattern (cards, buttons, callouts, accordions, tables). Avoid layouts the theme can't reproduce.
+- Keep content in the data tables in `build.py`, so it can be moved into WordPress pages or a structured source later.
+- Custom JavaScript (search, live hours, advisor finder, feedback, key dates) is isolated and small. On WordPress each piece may need a custom HTML block, a plugin or WSU web team approval; WordPress also has its own site search.
+- Styling here imitates the WSU theme; in WordPress the theme supplies it, so do not invest in CSS that would not carry over.
+
 ## How it is built
 
 - `_Scripts/build.py` holds every page's content plus the templates, CSS and JS. Run `/config/workspace/.venv/bin/python _Scripts/build.py` from this folder; it regenerates `site/`.
