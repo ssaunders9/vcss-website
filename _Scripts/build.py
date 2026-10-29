@@ -829,6 +829,12 @@ CN["ore"] = dict(total_in=34878, total_out=58668, housing=16386, admit=77, net_2
 CN["wsu"]["net_2324"] = 18171
 ORE_MAJORS = [("Mechanical Engineering", 78276, 76837), ("Civil Engineering", 74997, 73900), ("Chemical Engineering", 80564, 78780)]
 def og(x): return f'<span class="rival-ore">{x}</span>'   # Oregon comparison school: quiet orange text
+CN["ore"]["tuition_out"] = 38190
+# major: WSU, Seattle, Oregon median first-year earnings (College Scorecard)
+THREE_MAJORS = [("Mechanical Engineering", 78276, 79240, 76837), ("Civil Engineering", 74997, 75992, 73900), ("Electrical Engineering", 83445, 84874, 85263)]
+def cmp_cell(other, wsu, color):
+    """Competitor's figure in its quiet color, with WSU's saving underneath."""
+    return color(usd(other)) + f'<br><small class="saves">WSU saves {usd(other - wsu)}</small>'
 GAP_IN = CN["sea"]["total_in"] - CN["wsu"]["total_in"]; GAP_OUT = CN["sea"]["total_out"] - CN["wsu"]["total_out"]
 GAP_HOUSING = CN["sea"]["housing"] - CN["wsu"]["housing"]; GAP_TUIT_OUT = CN["sea"]["tuition_out"] - CN["wsu"]["tuition_out"]
 FED_CAT = {"Electrical Engineering": "Electrical, Electronics, and Communications Engineering", "Construction Management": "Construction Engineering Technology [VERIFY: WSU reports Construction Management under this category]",
@@ -842,49 +848,41 @@ page("cost-and-value", "Why Voiland College Costs Less", summary=(
      body='<div class="stat-row">'
           f'<div class="stat"><b>{usd(GAP_IN * 4)}</b><span>less to attend over four years, Washington residents</span></div>'
           f'<div class="stat"><b>{usd(GAP_OUT)}</b><span>less every year for out-of-state students</span></div>'
-          f'<div class="stat"><b>{CN["wsu"]["admit"]}%</b><span>of applicants admitted, vs. {rv(str(CN["sea"]["admit"]) + "%")} in Seattle</span></div></div>'
-          + src(CN_W, CN_U, note=f"Published total cost for beginning students living on campus, 2024-25. Four-year savings = 4 x the {usd(GAP_IN)} yearly in-state difference. Admission rates, fall 2024")
-     + sec("Lower cost of attendance", table(["2024-25, living on campus", "WSU Pullman", rv("Seattle flagship"), "You save at WSU"], [
-                ["Total cost, Washington resident", usd(CN["wsu"]["total_in"]), rv(usd(CN["sea"]["total_in"])), win(usd(GAP_IN))],
-                ["Total cost, out-of-state", usd(CN["wsu"]["total_out"]), rv(usd(CN["sea"]["total_out"])), win(usd(GAP_OUT))],
-                ["Food and housing", usd(CN["wsu"]["housing"]), rv(usd(CN["sea"]["housing"])), win(usd(GAP_HOUSING))]])
-           + p(f"Tuition for Washington residents is nearly the same at both schools. The savings come from living in Pullman: food and housing alone cost {usd(GAP_HOUSING)} less a year.")
-           + p(f'Total cost includes tuition and fees, books and supplies, food and housing, and other expenses. What your family pays after aid depends on income, so try <a href="{WSU_NPC_URL}">WSU\'s net price calculator</a>.')
-           + src(CN_W, CN_U, note="Estimated expenses for full-time beginning undergraduates, 2024-25"))
-     + sec("Same starting salaries", table(["Major", "WSU graduates, first year", rv("Seattle graduates, first year")],
-                [[m, win(usd(we)), rv(usd(ue))] for m, we, ue, _, _ in SAME_MAJORS])
-           + p(f"In mechanical, civil and electrical engineering, WSU graduates' median first-year earnings are within 2 percent of the Seattle flagship's "
-               f"(gaps of {', '.join(f'{(ue - we) / ue * 100:.1f}' for _, we, ue, _, _ in SAME_MAJORS)} percent), after paying less to get there.")
-           + src(SC_W, SC_U, note="Median earnings one year after graduating, for 2020-21 and 2021-22 graduates who received federal aid and were working, in 2024 dollars"))
+          f'<div class="stat"><b>{CN["wsu"]["admit"]}%</b><span>of applicants admitted, vs. {rv(str(CN["sea"]["admit"]) + "%")} in Seattle and {og(str(CN["ore"]["admit"]) + "%")} in Oregon</span></div></div>'
+          + src(CN_W, CN_U, CN_O, note=f"Published total cost for beginning students living on campus, 2024-25. Four-year savings = 4 x the {usd(GAP_IN)} yearly in-state difference. Admission rates, fall 2024")
+     + sec("Side by side: cost per year", table(["2024-25, living on campus", "WSU Pullman", rv("Seattle flagship"), og("Oregon land-grant")], [
+                ["Washington resident", win(usd(CN["wsu"]["total_in"])), cmp_cell(CN["sea"]["total_in"], CN["wsu"]["total_in"], rv),
+                 cmp_cell(CN["ore"]["total_out"], CN["wsu"]["total_in"], og) + f'<br><small>With WUE: {og("at least " + usd(CN["ore"]["total_in"]))}</small>'],
+                ["Out-of-state student, full price", win(usd(CN["wsu"]["total_out"])), cmp_cell(CN["sea"]["total_out"], CN["wsu"]["total_out"], rv), cmp_cell(CN["ore"]["total_out"], CN["wsu"]["total_out"], og)],
+                ["Out-of-state tuition and fees", win(usd(CN["wsu"]["tuition_out"])), cmp_cell(CN["sea"]["tuition_out"], CN["wsu"]["tuition_out"], rv), cmp_cell(CN["ore"]["tuition_out"], CN["wsu"]["tuition_out"], og)],
+                ["Food and housing", win(usd(CN["wsu"]["housing"])), cmp_cell(CN["sea"]["housing"], CN["wsu"]["housing"], rv), cmp_cell(CN["ore"]["housing"], CN["wsu"]["housing"], og)],
+                ["Applicants admitted, fall 2024", win(f'{CN["wsu"]["admit"]}%'), rv(f'{CN["sea"]["admit"]}%'), og(f'{CN["ore"]["admit"]}%')]])
+           + p(f"A Washington student pays {usd(CN['sea']['total_in'] - CN['wsu']['total_in'])} a year less at WSU than in Seattle, and {usd(CN['ore']['total_out'] - CN['wsu']['total_in'])} less than paying full out-of-state price in Oregon. "
+               f"WUE tuition is 150 percent of in-state tuition, so even with WUE, Oregon costs at least its in-state budget of {usd(CN['ore']['total_in'])}: {usd(CN['ore']['total_in'] - CN['wsu']['total_in'])} more than WSU.")
+           + p(f"Tuition for Washington residents is nearly the same at WSU and in Seattle. The difference is living costs: food and housing in Pullman cost {usd(CN['sea']['housing'] - CN['wsu']['housing'])} less than in Seattle "
+               f"and {usd(CN['ore']['housing'] - CN['wsu']['housing'])} less than in Oregon.")
+           + p(f'Total cost includes tuition and fees, books and supplies, food and housing, and other expenses. Your family\'s price after aid depends on income: try <a href="{WSU_NPC_URL}">WSU\'s net price calculator</a>.')
+           + src(CN_W, CN_U, CN_O, ("WICHE: Western Undergraduate Exchange", WUE_URL), note="Published budgets for full-time beginning students, 2024-25; admission rates, fall 2024"))
+     + sec("Side by side: starting salaries", table(["Major", "WSU graduates", rv("Seattle graduates"), og("Oregon graduates")],
+                [[m, win(usd(w)), rv(usd(u)), og(usd(o))] for m, w, u, o in THREE_MAJORS])
+           + p("In mechanical, civil and electrical engineering, WSU graduates start within about 2 percent of both schools, and ahead of Oregon in mechanical and civil, after paying less to get there.")
+           + src(SC_W, SC_U, SC_O, note="Median earnings one year after graduating, 2020-21 and 2021-22 graduates who received federal aid and were working, in 2024 dollars"))
      + sec("Voiland College graduates start strong", table(["Major", "Median earnings, first year out"],
                 [[m + (f'<br><small>Federal category: {FED_CAT[m]}</small>' if m in FED_CAT else ""), usd(e)] for m, _, e, _, _ in SC_MAJORS if m != "Architecture"])
            + p("Pell Grant recipients earn the same as everyone else: in mechanical engineering, $78,564 for Pell recipients compared with $78,276 overall.")
            + p(f"Median monthly federal loan payments for WSU graduates in these majors run from {usd(min(PAYS))} to {usd(max(PAYS))}, on a standard 10-year plan.")
            + src(SC_W, note="Earnings: 2020-21 and 2021-22 graduates, one year after graduating, in 2024 dollars. Loan payments: 2022-23 and 2023-24 graduates"))
-     + sec("Choosing between WSU and " + og("Oregon"), table(["2024-25, living on campus", "WSU Pullman", og("Oregon land-grant"), "You save at WSU"], [
-                ["Washington student, full out-of-state price in Oregon", usd(CN["wsu"]["total_in"]), og(usd(CN["ore"]["total_out"])), win(usd(CN["ore"]["total_out"] - CN["wsu"]["total_in"]))],
-                ["Washington student with WUE in Oregon", usd(CN["wsu"]["total_in"]), og("at least " + usd(CN["ore"]["total_in"])), win("at least " + usd(CN["ore"]["total_in"] - CN["wsu"]["total_in"]))],
-                ["Out-of-state student at either school, full price", usd(CN["wsu"]["total_out"]), og(usd(CN["ore"]["total_out"])), win(usd(CN["ore"]["total_out"] - CN["wsu"]["total_out"]))],
-                ["Food and housing", usd(CN["wsu"]["housing"]), og(usd(CN["ore"]["housing"])), win(usd(CN["ore"]["housing"] - CN["wsu"]["housing"]))],
-                ["Average net price after aid, in-state students (2023-24)", usd(CN["wsu"]["net_2324"]), og(usd(CN["ore"]["net_2324"])), win(usd(CN["ore"]["net_2324"] - CN["wsu"]["net_2324"]))]])
-           + p(f"WUE tuition is 150 percent of in-state tuition, so a Washington student on WUE in Oregon pays at least that school's full in-state budget of {usd(CN['ore']['total_in'])}. "
-               f"That is already {usd(CN['ore']['total_in'] - CN['wsu']['total_in'])} a year more than staying home at WSU, before the WUE premium is added.")
-           + p(f"WSU also admits more students: {CN['wsu']['admit']} percent in fall 2024, compared with {og(str(CN['ore']['admit']) + ' percent')} in Oregon.")
-           + src(CN_W, CN_O, ("WICHE: Western Undergraduate Exchange", WUE_URL), note="Published budgets for beginning students, 2024-25; net price 2023-24; admission rates, fall 2024")
-           + table(["Major", "WSU graduates, first year", og("Oregon graduates, first year")], [[m, win(usd(w)), og(usd(o))] for m, w, o in ORE_MAJORS])
-           + p("In mechanical, civil and chemical engineering, WSU graduates out-earn the Oregon land-grant's in their first year.")
-           + src(SC_W, SC_O, note="Median earnings one year after graduating, 2020-21 and 2021-22 graduates who received federal aid, in 2024 dollars"))
-     + sec("Out-of-state? It gets better", p(f"WSU's out-of-state tuition and fees are already {usd(GAP_TUIT_OUT)} a year below the Seattle flagship's (2024-25). "
+     + sec("Out-of-state? It gets better", p(f"WSU's out-of-state tuition and fees are already {usd(GAP_TUIT_OUT)} a year below the Seattle flagship's and {usd(CN['ore']['tuition_out'] - CN['wsu']['tuition_out'])} below the Oregon land-grant's (2024-25). "
                                               "Students from Western Undergraduate Exchange states can add the WUE Distinguished Cougar Award and Voiland College's $2,000-a-year WUEE Scholarship, which together close the gap between in-state and out-of-state tuition. [VERIFY: amounts for 2027-28]")
-           + src(CN_W, CN_U, ("Voiland College scholarships", VCEA_SCHOLARSHIPS_URL), ("WICHE: Western Undergraduate Exchange", WUE_URL)))
+           + src(CN_W, CN_U, CN_O, ("Voiland College scholarships", VCEA_SCHOLARSHIPS_URL), ("WICHE: Western Undergraduate Exchange", WUE_URL)))
      + sec("Scholarships from one application", ul(["<strong>Distinguished Dean's Scholarship:</strong> full tuition, renewable for up to four years",
                                                     "<strong>Dean's Scholarship:</strong> more than 300 awarded every year to new first-year and transfer students",
                                                     "<strong>WUEE Scholarship:</strong> $2,000 a year for out-of-state engineering and computer science students"])
            + p("One form, the WSU General Scholarship Application, covers all three. Priority deadline: January 31.")
            + src(("Voiland College scholarships", VCEA_SCHOLARSHIPS_URL)))
-     + sec("More students get their shot", p(f"WSU admits {CN['wsu']['admit']} percent of applicants, compared with {rv(str(CN['sea']['admit']) + ' percent')} at the Seattle flagship. "
+     + sec("More students get their shot", p(f"WSU admits {CN['wsu']['admit']} percent of applicants, compared with {rv(str(CN['sea']['admit']) + ' percent')} at the Seattle flagship and {og(str(CN['ore']['admit']) + ' percent')} at the Oregon land-grant. "
                                              "At Voiland College, first-year students start in the college right away, with ENGR 101 and 102 and free tutoring from day one.")
-           + src(CN_W, CN_U, ("First-Year Program", "@@/first-year-transfer/first-year-program/")))
+           + src(CN_W, CN_U, CN_O, ("First-Year Program", "@@/first-year-transfer/first-year-program/")))
      + sec("Earn while you learn", ul(["<strong>ProPEL:</strong> earn credit for paid internships and co-ops while staying a full-time student. " + L("@@/careers/internships-propel/", "ProPEL"),
                                        "<strong>Micro-internships:</strong> paid short projects through Parker Dewey, often remote.",
                                        "<strong>Campus roles:</strong> peer tutor, first-year peer coordinator, Peer Career Guide, Wellness peer supporter. [VERIFY: which roles are paid]"]))
@@ -1316,6 +1314,7 @@ th .rival{background:none;color:#4B2E83;font-weight:600;opacity:1}
 .stat .rival{font-size:inherit}
 .win{color:var(--crimson);font-weight:800;font-size:1.05em}
 .rival-ore{color:#B5390A;font-weight:400;opacity:.9}th .rival-ore{font-weight:600;opacity:1}
+.saves{color:var(--crimson);font-weight:700;font-size:.8rem}
 """
 
 JS = """(function(){
