@@ -753,6 +753,31 @@ PAGES["careers/toolkit"]["body"] = p("Start with your résumé, practice for int
 OWNERS.update({"first-year-transfer": "First-Year Programs", "first-year-transfer/transfer-students": "Advising", "paying-for-school": "Student Success",
                "get-involved/events": "Student Success", "get-involved/spotlights": "Student Success", "give": "Student Success", "faculty-staff": "Student Success"})
 
+
+# ---------- "Find us in SEH": most services share one building ----------
+SEH_FLOORS = [
+    ("2nd floor", [("202", "Club Hub", "get-involved/clubs")]),
+    ("1st floor", [("102", "Welcome Center and Career Services", "careers"), ("124 and 126", "Advising and Student Success offices", "academic-help/advising"),
+                   ("130", "Bowers Tutoring Center", "academic-help/tutoring")]),
+]
+ELSEWHERE = [("Wellness Center", "Daggy Hall 101", "wellness"), ("FIZ and Voiland College Shops", "Dana Hall, ground floor", "get-involved/maker-spaces"),
+             ("Fabrication Labs", "Next to Carpenter Hall", "get-involved/maker-spaces")]
+SEH_MAP = "https://www.google.com/maps/search/?api=1&query=Schweitzer+Engineering+Hall+150+SE+Spokane+St+Pullman+WA"
+def seh_directory(compact=False):
+    floors = "".join(f'<div class="floor"><span class="floor-tag">{fl}</span><ul>' + "".join(
+        f'<li><b>{rm}</b><a href="@@/{slug}/">{name}</a></li>' for rm, name, slug in rooms) + "</ul></div>" for fl, rooms in SEH_FLOORS)
+    other = "".join(f'<li><a href="@@/{slug}/">{n}</a>: {where}</li>' for n, where, slug in ELSEWHERE)
+    return (f'<section class="seh{" seh-compact" if compact else ""}"><h2>Find us in SEH</h2>'
+            '<div class="seh-card"><img src="@@/img/seh-placeholder.svg" alt="Schweitzer Engineering Hall entrance" loading="lazy">'
+            '<div class="seh-body"><p class="seh-name"><strong>Schweitzer Engineering Hall (SEH)</strong><span>150 SE Spokane St., Pullman</span></p>'
+            f'<p>Most Student Success services are in one building.</p>{floors}'
+            f'<p class="seh-links"><a class="btn btn-2" href="{SEH_MAP}">Get directions</a></p></div></div>'
+            f'<p class="elsewhere"><strong>In other buildings:</strong></p><ul class="elsewhere">{other}</ul>'
+            '<p><small>[TBD: photo of the SEH entrance; optional campus map embed in WordPress]</small></p></section>')
+
+PAGES["about/locations"]["body"] = seh_directory() + PAGES["about/locations"]["body"]
+PAGES["about"]["body"] = PAGES["about"]["body"] + seh_directory(compact=True)
+
 REDIRECTS = [("/advising/", "academic-help/advising"), ("/tutoring/", "academic-help/tutoring"), ("/tutoring/tutoring-schedule/", "academic-help/tutoring"),
  ("/tutoring/meet-your-tutors/", "academic-help/tutoring"), ("/mentorship-programs/", "academic-help/mentoring"), ("/internships-careers/", "careers"),
  ("/internships-careers/propel/", "careers/internships-propel"), ("/?page_id=254", "careers/internships-propel"),
@@ -811,7 +836,7 @@ def layout(slug, title, main, crumbs=""):
    <div><h3>For</h3><ul><li><a href="{url('visit', base)}">Visit us</a></li><li><a href="{url('employers', base)}">Employers</a></li><li><a href="{url('faculty-staff', base)}">Faculty &amp; Staff</a></li><li><a href="{url('club-advisors', base)}">Club Advisors</a></li><li><a href="{url('give', base)}">Give</a></li></ul></div>
   </div>
   <p class="social"><a href="https://www.facebook.com/WSUVoilandSS">Facebook</a> <a href="https://x.com/WSUVoilandPPEL">X</a> <a href="https://www.linkedin.com/groups/14355576/">LinkedIn</a> Instagram [TBD]</p>
-  <p class="small">Student Success Team, Voiland College of Engineering and Architecture<br>PO Box 642250, Pullman, WA 99164-2250, 509-335-5050, <a href="mailto:vcea.info@wsu.edu">vcea.info@wsu.edu</a></p></div>
+  <p class="small">Student Success Team, Voiland College of Engineering and Architecture<br>Most services: Schweitzer Engineering Hall (SEH), 150 SE Spokane St.<br>PO Box 642250, Pullman, WA 99164-2250, 509-335-5050, <a href="mailto:vcea.info@wsu.edu">vcea.info@wsu.edu</a></p></div>
  <div class="foot-bottom"><span>&copy; Washington State University</span><ul><li>Access</li><li>Policies</li><li>MyWSU</li><li>Follow WSU</li></ul></div></footer>
 <script>
 @@JS@@
@@ -867,6 +892,7 @@ def render_home():
 <p class="lede">Free support to help you succeed in class, on your career path, and beyond.</p></div></section>
 <h2 class="sr">I want to…</h2><ul class="tasks">{t}</ul>
 <p class="start-here">Not sure where to start? <a href="@@/what-to-do/">See what to do if you are stuck</a></p>
+{seh_directory(compact=True)}
 {glance}
 <div class="strip">
  {key_dates_html()}
@@ -882,7 +908,8 @@ IMAGES = {  # name: (w, h, bg, label)
  "hero.svg": (1400, 420, "#5e6a71", "HERO IMAGE 1400x420"), "card-academic.svg": (600, 300, "#981e32", "ACADEMIC"),
  "card-firstyear.svg": (600, 300, "#4a5a63", "FIRST-YEAR"), "card-careers.svg": (600, 300, "#7a1727", "CAREERS"),
  "card-money.svg": (600, 300, "#5e6a71", "PAYING FOR SCHOOL"), "card-involved.svg": (600, 300, "#981e32", "GET INVOLVED"),
- "spotlight-placeholder.svg": (600, 300, "#4a5a63", "SPOTLIGHT PHOTO"), "person-placeholder.svg": (300, 300, "#8a949a", "PHOTO")}
+ "spotlight-placeholder.svg": (600, 300, "#4a5a63", "SPOTLIGHT PHOTO"), "person-placeholder.svg": (300, 300, "#8a949a", "PHOTO"),
+ "seh-placeholder.svg": (800, 600, "#5e6a71", "PHOTO: SEH ENTRANCE")}
 
 CSS = """:root{--crimson:#A60F2D;--bright:#CA1237;--dark:#7f0b22;--gray:#595959;--light:#F2F2F2;--ink:#262626;--bg:#fff;--card:#fff;--line:#D8D8D8;--charcoal:#333}
 *{box-sizing:border-box}body{margin:0;font:16px/1.55 system-ui,sans-serif;color:var(--ink);background:var(--bg)}
@@ -1124,6 +1151,21 @@ nav[aria-label=Primary]>ul.util-mobile{display:none}
 .kd-date b{font-size:.7rem;letter-spacing:.08em;color:var(--crimson);margin-bottom:3px}
 .keydates li>span:last-child{display:flex;flex-direction:column;font-size:.9rem}.keydates small{color:var(--gray)}
 .strip .keydates a.ics,.strip .keydates li a{display:inline;font-size:.85rem}.strip .keydates li a:before{content:none}
+/* Find us in SEH: lobby-directory style card */
+.seh{padding:24px 0 8px!important}
+.seh-card{display:grid;grid-template-columns:minmax(220px,38%) 1fr;background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.14)}
+.seh-card img{width:100%;height:100%;object-fit:cover;min-height:220px}
+.seh-body{padding:18px 22px}.seh-body>p{margin:.2em 0 .6em}
+.seh-name strong{display:block;font-size:1.2rem}.seh-name span{color:var(--gray);font-size:.9rem}
+.floor{display:grid;grid-template-columns:96px 1fr;gap:12px;align-items:start;border-top:1px solid var(--line);padding:10px 0}
+.floor-tag{background:var(--crimson);color:#fff;font-weight:700;font-size:.75rem;letter-spacing:.06em;text-transform:uppercase;padding:6px 8px;text-align:center}
+.floor ul{list-style:none;margin:0;padding:0}.floor li{display:flex;gap:12px;margin:2px 0 6px;font-size:.95rem}
+.floor b{min-width:92px;color:var(--ink)}
+.seh-links{margin-top:10px}
+ul.elsewhere{list-style:none;padding:0;margin:4px 0;display:flex;flex-wrap:wrap;gap:6px 24px;font-size:.92rem}
+p.elsewhere{margin:14px 0 0}
+.seh-compact .seh-card img{min-height:180px}
+@media (max-width:700px){.seh-card{grid-template-columns:1fr}.seh-card img{max-height:200px}.floor{grid-template-columns:1fr}.floor b{min-width:70px}}
 """
 
 JS = """(function(){
