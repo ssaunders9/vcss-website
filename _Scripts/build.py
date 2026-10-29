@@ -953,7 +953,10 @@ def layout(slug, title, main, crumbs=""):
 @@JS@@
 </script>
 </body></html>"""
-    return mark(doc.replace("@@VER@@", VERSION).replace("@@JS@@", JS).replace("@@/", base))
+    doc = doc.replace("@@VER@@", VERSION).replace("@@JS@@", JS).replace("@@/", base)
+    # Outside links open in a new tab: many source sites (College Navigator, Scorecard, WICHE) refuse to load inside a frame or preview pane
+    doc = re.sub(r'<a href="(https?://[^"]+)"', r'<a href="\1" target="_blank" rel="noopener"', doc)
+    return mark(doc)
 
 def render(slug, d):
     crumbs = ""
