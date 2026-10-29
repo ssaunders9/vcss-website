@@ -778,6 +778,56 @@ def seh_directory(compact=False):
 PAGES["about/locations"]["body"] = seh_directory() + PAGES["about/locations"]["body"]
 PAGES["about"]["body"] = PAGES["about"]["body"] + seh_directory(compact=True)
 
+
+# ---------- Cost and value (recruiting): federal College Scorecard data, retrieved 2026-10-29 ----------
+SCORECARD_URL = "https://collegescorecard.ed.gov/school/?236939-Washington-State-University"
+SC = dict(coa=27914, tuition_in=13888, tuition_out=30994, net_avg=13462, median_debt=18500,
+          net_by_income=[("$0 to $30,000", 6750), ("$30,001 to $48,000", 7495), ("$48,001 to $75,000", 8683), ("$75,001 to $110,000", 15212), ("Over $110,000", 24537)])
+# major, federal program category, median earnings 1 year after graduating, median federal loan debt, typical monthly payment
+SC_MAJORS = [("Computer Science", "Computer Science", 86200, 17853, 203), ("Computer Engineering", "Computer Engineering", 84757, 22000, 250),
+             ("Construction Management", "Construction Engineering Technology", 83583, 19500, 222), ("Electrical Engineering", "Electrical Engineering", 83445, 20537, 233),
+             ("Chemical Engineering", "Chemical Engineering", 80564, 23500, 267), ("Mechanical Engineering", "Mechanical Engineering", 78276, 19579, 223),
+             ("Civil Engineering", "Civil Engineering", 74997, 19250, 219), ("Materials Science and Engineering", "Materials Engineering", 70115, None, None),
+             ("Bioengineering", "Biomedical Engineering", 66883, None, None), ("Architecture", "Architectural Sciences and Technology", 49465, 22208, 252)]
+def usd(n): return f"${n:,}" if n is not None else "Not reported"
+
+page("cost-and-value", "What Voiland College Really Costs", summary=(
+     f"Most families pay far less than the sticker price. At WSU the average net price after grants and scholarships is {usd(SC['net_avg'])} a year, "
+     f"and Voiland College graduates in most majors earn $75,000 to $86,000 in their first year out."),
+     button=("Visit and ask us", "@@/visit/"),
+     body=sec("Sticker price vs. what families pay", p(f"WSU's published cost of attendance for a Washington resident is {usd(SC['coa'])} a year, including tuition ({usd(SC['tuition_in'])}), housing, food and books. "
+                                                         "After grants and scholarships, families pay much less, and lower-income families pay the least.")
+              + table(["Family income", "Average net price per year"], [[a, usd(b)] for a, b in SC["net_by_income"]] + [["All incomes", usd(SC["net_avg"])]])
+              + p("<small>Average net price for Washington residents who receive federal financial aid, after grants and scholarships. Your own number depends on your family: use WSU's net price calculator. [TBD: link]</small>"))
+     + sec("Out-of-state students", p(f"Out-of-state tuition is {usd(SC['tuition_out'])} a year, but most engineering students from western states do not pay it. "
+                                       "Students from Western Undergraduate Exchange (WUE) states can combine the WUE Distinguished Cougar Award with Voiland College's WUEE Scholarship, an extra $2,000 a year. Together they close the gap with in-state tuition. [VERIFY: amounts each year]"))
+     + sec("Scholarships from one application", ul(["<strong>Distinguished Dean's Scholarship:</strong> full tuition, renewable for up to four years",
+                                                    "<strong>Dean's Scholarship:</strong> more than 300 awarded each year to incoming first-year and transfer students",
+                                                    "<strong>WUEE Scholarship:</strong> $2,000 a year for out-of-state engineering and computer science students"])
+           + p("One form, the WSU General Scholarship Application, covers all three. Priority deadline: January 31. " + L("@@/paying-for-school/scholarships/", "Scholarship details") + "."))
+     + sec("What graduates earn and owe", p("In every engineering and computing major with data, median first-year earnings are more than three times the median federal loan debt. Typical loan payments are about $200 to $270 a month.")
+           + table(["Major", "Median earnings, 1 year out", "Median federal loan debt", "Typical monthly payment"],
+                   [[m, usd(e), usd(dbt), (usd(pay) if pay else "Not reported")] for m, _, e, dbt, pay in SC_MAJORS])
+           + p("<small>WSU graduates who received federal aid, working and not enrolled one year after graduating. Construction Management is reported under the federal category Construction Engineering Technology. Interior Design and Landscape Architecture are not shown because the federal data groups them with other WSU programs. Payment is the standard 10-year federal estimate.</small>")
+           + p("In the largest majors, students who received Pell Grants earn about the same as everyone else: in Mechanical Engineering, $78,564 compared with $78,276."))
+     + sec("Earn while you learn", ul(["<strong>ProPEL:</strong> paid internships and co-ops for academic credit, while you stay a full-time student. " + L("@@/careers/internships-propel/", "ProPEL"),
+                                       "<strong>Micro-internships:</strong> paid short projects through Parker Dewey, often remote.",
+                                       "<strong>Student roles:</strong> peer tutor, first-year peer coordinator, Peer Career Guide and Wellness peer supporter. [VERIFY: which roles are paid]"]))
+     + sec("Free support is part of the price", p("Tutoring, advising, mentoring, career coaching, the FIZ maker space and the Wellness Center are free to every Voiland College student. Staying on track to graduate on time is one of the biggest ways to keep college affordable.")
+           + p(L("@@/first-year-transfer/first-year-program/", "First-Year Program") + ", " + L("@@/academic-help/tutoring/", "Tutoring") + ", " + L("@@/careers/", "Career Services") + "."))
+     + sec("Comparing offers? Ask every school", check(["What is our net price after grants, not the sticker price?", "Do the scholarships renew every year, and what does renewal require?",
+                                                        "Can I earn credit for a paid internship without falling behind?", "What do graduates in my major earn in their first year?",
+                                                        "What free tutoring and advising come with tuition?"]))
+     + sec("Sources", p(f'Net price, cost of attendance, tuition, earnings and debt: U.S. Department of Education, <a href="{SCORECARD_URL}">College Scorecard</a>, most recent data, retrieved October 29, 2026. '
+                         'Scholarships: Voiland College Student Success scholarships page. Figures change each year; update them every fall.')),
+     contact_card=contact("Recruiting", "Future Cougs", VISIT_MAIL, "[TBD]"))
+
+KEYWORDS["cost-and-value"] = "cost costs tuition price afford affordable net price sticker out-of-state wue salary salaries earnings debt loans value worth roi compare"
+OWNERS["cost-and-value"] = "Recruiting"
+UTIL.insert(1, ("Cost and Value", "cost-and-value"))
+PAGES["visit"]["body"] = PAGES["visit"]["body"] + sec("Wondering about cost?", p("See what families actually pay and what graduates earn: " + L("@@/cost-and-value/", "What Voiland College Really Costs") + "."))
+PAGES["paying-for-school"]["body"] = PAGES["paying-for-school"]["body"] + p("Comparing schools? See " + L("@@/cost-and-value/", "what Voiland College really costs") + ".")
+
 REDIRECTS = [("/advising/", "academic-help/advising"), ("/tutoring/", "academic-help/tutoring"), ("/tutoring/tutoring-schedule/", "academic-help/tutoring"),
  ("/tutoring/meet-your-tutors/", "academic-help/tutoring"), ("/mentorship-programs/", "academic-help/mentoring"), ("/internships-careers/", "careers"),
  ("/internships-careers/propel/", "careers/internships-propel"), ("/?page_id=254", "careers/internships-propel"),
@@ -833,7 +883,7 @@ def layout(slug, title, main, crumbs=""):
    <div><h3>Get help</h3><ul><li><a href="{url('academic-help/tutoring', base)}">Tutoring</a></li><li><a href="{url('academic-help/advising', base)}">Advising</a></li><li><a href="{url('academic-help/mentoring', base)}">Mentoring</a></li><li><a href="{url('wellness', base)}">Wellness Center</a></li></ul></div>
    <div><h3>Careers</h3><ul><li><a href="{url('careers/coaching', base)}">Career coaching</a></li><li><a href="{url('careers/internships-propel', base)}">Internships &amp; ProPEL</a></li><li><a href="{url('careers/career-fairs', base)}">Career fairs</a></li><li><a href="{url('careers/toolkit', base)}">Career toolkit</a></li></ul></div>
    <div><h3>Get involved</h3><ul><li><a href="{url('get-involved/clubs', base)}">Clubs</a></li><li><a href="{url('get-involved/maker-spaces', base)}">Maker spaces</a></li><li><a href="{url('get-involved/events', base)}">Events</a></li><li><a href="{url('paying-for-school/scholarships', base)}">Scholarships</a></li></ul></div>
-   <div><h3>For</h3><ul><li><a href="{url('visit', base)}">Visit us</a></li><li><a href="{url('employers', base)}">Employers</a></li><li><a href="{url('faculty-staff', base)}">Faculty &amp; Staff</a></li><li><a href="{url('club-advisors', base)}">Club Advisors</a></li><li><a href="{url('give', base)}">Give</a></li></ul></div>
+   <div><h3>For</h3><ul><li><a href="{url('visit', base)}">Visit us</a></li><li><a href="{url('cost-and-value', base)}">Cost and value</a></li><li><a href="{url('employers', base)}">Employers</a></li><li><a href="{url('faculty-staff', base)}">Faculty &amp; Staff</a></li><li><a href="{url('club-advisors', base)}">Club Advisors</a></li><li><a href="{url('give', base)}">Give</a></li></ul></div>
   </div>
   <p class="social"><a href="https://www.facebook.com/WSUVoilandSS">Facebook</a> <a href="https://x.com/WSUVoilandPPEL">X</a> <a href="https://www.linkedin.com/groups/14355576/">LinkedIn</a> Instagram [TBD]</p>
   <p class="small">Student Success Team, Voiland College of Engineering and Architecture<br>Most services: Schweitzer Engineering Hall (SEH), 150 SE Spokane St.<br>PO Box 642250, Pullman, WA 99164-2250, 509-335-5050, <a href="mailto:vcea.info@wsu.edu">vcea.info@wsu.edu</a></p></div>
