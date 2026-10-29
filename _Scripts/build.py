@@ -471,6 +471,162 @@ page("visit", "Visit Voiland College", summary="Prospective students: come see t
      + p("<small>[VERIFY: the request spelled the address “VCEA.Recuriting@wsu.edu”; this page uses VCEA.Recruiting@wsu.edu. Confirm which is correct.]</small>"),
      contact_card=contact("Student Success Recruiting", "Future Cougs", VISIT_MAIL, "[TBD]", "SEH 102A [VERIFY: Lisa Carmack, Student Success Coordinator, Future Cougs, is listed there]"))
 
+
+# ---------- student-first features: hours data, search, advisor finder, situations, key dates ----------
+# Single source for every office's place and hours. sched: weekday (0=Sun) -> [[start, end], ...] in Pacific hours.
+# kind "hours" = a service that is open; "event" = something that starts at set times (visits).
+SERVICES = [
+    dict(key="main", name="Main office", place="[TBD]", hours="[TBD]", sched=None, kind="hours", email="vcea.info@wsu.edu", phone="509-335-5050", page="about"),
+    dict(key="tutoring", name="Tutoring", place="SEH 130", hours="Mon to Fri, times vary by course", sched=None, kind="hours", email="vcea.info@wsu.edu", phone="509-335-5050",
+         page="academic-help/tutoring", link=("See today's tutors (WSU login)", "https://tutoring.wsu.edu/"), home=True),
+    dict(key="career", name="Career drop-in", place="SEH 102", hours="Mon 2 to 3, Tue 12 to 1, Wed 3 to 4, Thu 12 to 1, Fri 2 to 3",
+         sched={1: [[14, 15]], 2: [[12, 13]], 3: [[15, 16]], 4: [[12, 13]], 5: [[14, 15]]}, kind="hours", email="vcea.internships@wsu.edu", phone="509-335-8726",
+         page="careers", link=("See all hours", "@@/careers/coaching/"), home=True),
+    dict(key="visits", name="Campus visits", place="[TBD]", hours="Noon Mon to Sat, 2:30 pm Fri",
+         sched={1: [[12, 13]], 2: [[12, 13]], 3: [[12, 13]], 4: [[12, 13]], 5: [[12, 13], [14.5, 15.5]], 6: [[12, 13]]}, kind="event", email="VCEA.Recruiting@wsu.edu", phone="[TBD]",
+         page="visit", link=("Sign up for a visit", "@@/visit/"), home=True),
+    dict(key="clubs", name="Club Hub", place="SEH 202", hours="[TBD]", sched=None, kind="hours", email="vcea.studentclubs@wsu.edu", phone="509-335-6643", page="get-involved/clubs"),
+    dict(key="fiz", name="FIZ and maker spaces", place="Dana Hall", hours="[TBD]", sched=None, kind="hours", email="mpepper@wsu.edu", phone="509-335-8550", page="get-involved/maker-spaces"),
+    dict(key="wellness", name="Wellness Center", place="Daggy Hall 101", hours="Mon to Fri, 9 to 4", sched={d: [[9, 16]] for d in range(1, 6)}, kind="hours",
+         email="alena.hume@wsu.edu", phone="509-335-5376", page="wellness", link=("Crisis? Call or text 988", "tel:988"), home=True),
+]
+SVC = {s["key"]: s for s in SERVICES}
+
+def status_span(s, prefix=""):
+    """Live open/closed text; falls back to the static hours when JS is off or there is no schedule."""
+    fallback = f"{prefix}{s['hours']}"
+    if not s["sched"]:
+        return f"<span>{fallback}</span>"
+    data = json.dumps({str(k): v for k, v in s["sched"].items()})
+    return f"<span class=\"status\" data-sched='{data}' data-kind=\"{s['kind']}\" data-prefix=\"{escape(prefix)}\">{fallback}</span>"
+
+# Locations page rebuilt from SERVICES so hours live in one place.
+PAGES["about/locations"]["body"] = (
+    table(["Service", "Location", "Hours", "Right now", "Email", "Phone"],
+          [[f'<a href="@@/{s["page"]}/">{s["name"]}</a>', s["place"], s["hours"], status_span(s) if s["sched"] else "", mail(s["email"]),
+            tel(s["phone"]) if "TBD" not in s["phone"] else s["phone"]] for s in SERVICES])
+    + p("<small>“Right now” uses Pacific time.</small>")
+    + sec("Map", '<div class="map-slot">[TBD: map embed]</div>')
+    + sec("Mailing addresses", p("PO Box 642250, Pullman, WA 99164-2250. Career Services: PO Box 642718, Pullman, WA 99164-2718. Club packages: see " + L("@@/club-advisors/", "Club Advisors") + ".")))
+# Live status on service pages
+PAGES["careers"]["where"] += " Right now: " + status_span(SVC["career"])
+PAGES["wellness"]["where"] += " Right now: " + status_span(SVC["wellness"])
+PAGES["visit"]["where"] += " Next visit: " + status_span(SVC["visits"])
+
+# Tutoring: the schedule site needs a WSU login; say so instead of surprising students.
+PAGES["academic-help/tutoring"]["button"] = ("See today's tutors (WSU login)", "https://tutoring.wsu.edu/")
+PAGES["academic-help/tutoring"]["body"] = p("<small>The tutor schedule is on tutoring.wsu.edu and needs your WSU login. [TBD: publish the schedule here by course so students can check without signing in]</small>") + PAGES["academic-help/tutoring"]["body"]
+
+# Advisor finder: pick a major, get your advising office, requirements, and (later) your advisor and a booking link.
+def advisor_finder():
+    data = json.dumps([{"m": m, "a": a, "r": r} for m, a, r in MAJORS])
+    opts = "".join(f'<option value="{i}">{escape(m)}</option>' for i, (m, _, _) in enumerate(MAJORS))
+    return ('<section class="finder"><h2>Find your advising office</h2><label for="major">Your major</label>'
+            f'<select id="major"><option value="">Choose your major</option>{opts}</select><div id="finder-out" aria-live="polite"></div>'
+            '<p><small>Advisor names and booking links by major: [TBD: add once a single booking page exists]. No JavaScript? Use the table below.</small></p>'
+            '<script>(function(){var D=' + data + ',s=document.getElementById("major"),o=document.getElementById("finder-out");'
+            's.addEventListener("change",function(){var d=D[s.value];if(!d){o.innerHTML="";return;}'
+            'o.innerHTML="<p><strong>"+d.m+"</strong></p><p><a class=\\"btn\\" href=\\""+d.a+"\\">Advising office</a> <a class=\\"btn btn-2\\" href=\\""+d.r+"\\">Degree requirements</a></p>";});})();</script></section>')
+PAGES["academic-help/advising"]["body"] = advisor_finder() + PAGES["academic-help/advising"]["body"]
+
+# "What to do if" page: start from the student's situation, not the office.
+SITUATIONS = [
+    ("I'm behind or failing in a class", "Go to tutoring this week, then talk with your instructor. If you are thinking about dropping, see your advisor before the deadline.", [("Tutoring", "@@/academic-help/tutoring/"), ("Academic calendar", "https://catalog.wsu.edu/AcademicCalendar")]),
+    ("I have a registration hold", "Open myWSU to see which office placed the hold. Your advisor can help you clear advising holds.", [("myWSU", "https://my.wsu.edu/"), ("Academic Advising", "@@/academic-help/advising/")]),
+    ("I want to drop a class or withdraw", "Talk with your advisor first. Dropping can affect financial aid, scholarships and your degree timeline.", [("Find your advising office", "@@/academic-help/advising/"), ("Academic calendar", "https://catalog.wsu.edu/AcademicCalendar")]),
+    ("I want to change my major", "Meet with an advisor in the major you want. Each school sets its own certification requirements.", [("Requirements by major", "@@/academic-help/advising/")]),
+    ("I'm a transfer and my credits didn't count", "Contact the transfer coordinator with your transcript and the course you expected to transfer.", [("Transfer Students", "@@/first-year-transfer/transfer-students/")]),
+    ("I have a money emergency", "Tell us what happened. Emergency aid can help with unexpected costs.", [("Emergency Aid", "@@/paying-for-school/emergency-aid/"), ("Scholarships", "@@/paying-for-school/scholarships/")]),
+    ("I'm stressed or overwhelmed", "Stop by the Wellness Center to take a break or talk with a peer supporter. In a crisis, call or text 988.", [("Wellness Center", "@@/wellness/"), ("Call or text 988", "tel:988")]),
+    ("I need an internship or job", "Drop in at SEH 102 or book a career coach. Paid internships can earn credit through ProPEL.", [("Careers & Internships", "@@/careers/"), ("ProPEL", "@@/careers/internships-propel/")]),
+    ("I don't know who to ask", "Email or call the Student Success team and we will point you to the right person.", [("vcea.info@wsu.edu", "mailto:vcea.info@wsu.edu"), ("509-335-5050", "tel:5093355050")]),
+]
+page("what-to-do", "What to do if", summary="Start with your situation. Each one lists the first step and where to go.",
+     body='<div class="situations">' + "".join(
+         f'<details><summary>{q}</summary><div><p>{a}</p><p>' + " ".join(btn(t, u, i > 0) for i, (t, u) in enumerate(links)) + "</p></div></details>"
+         for q, a, links in SITUATIONS) + "</div>",
+     contact_card=contact("Student Success", None, "vcea.info@wsu.edu", "509-335-5050"))
+
+# Key dates (only real dates appear; past dates hide themselves). Each gets an .ics download.
+DATES = [
+    ("2027-01-31", "Scholarship priority deadline", "WSU General Scholarship Application", "paying-for-school/scholarships"),
+]
+def ics(d, title, detail):
+    ymd = d.replace("-", ""); y, m, dd = map(int, d.split("-"))
+    import datetime as _dt
+    nxt = (_dt.date(y, m, dd) + _dt.timedelta(days=1)).strftime("%Y%m%d")
+    return ("BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//VCEA Student Success//EN\r\nBEGIN:VEVENT\r\n"
+            f"UID:{ymd}-{re.sub(r'[^a-z0-9]+', '-', title.lower())}@vcea-student-success\r\nDTSTAMP:20261029T000000Z\r\n"
+            f"DTSTART;VALUE=DATE:{ymd}\r\nDTEND;VALUE=DATE:{nxt}\r\nSUMMARY:{title}\r\nDESCRIPTION:{detail}\r\nEND:VEVENT\r\nEND:VCALENDAR\r\n")
+def ics_name(d, title): return f"{d}-{re.sub(r'[^a-z0-9]+', '-', title.lower()).strip('-')}.ics"
+def key_dates_html():
+    import datetime as _dt
+    items = ""
+    for d, t, detail, slug in DATES:
+        dt = _dt.date(*map(int, d.split("-")))
+        items += (f'<li data-date="{d}"><span class="kd-date"><b>{dt.strftime("%b").upper()}</b>{dt.day}</span>'
+                  f'<span><a href="@@/{slug}/">{t}</a><small>{detail}</small><a class="ics" href="@@/dates/{ics_name(d, t)}" download>Add to calendar</a></span></li>')
+    return ('<section class="keydates"><h2>Key dates</h2><ul>' + items + "</ul>"
+            '<a class="arrow-link" href="https://catalog.wsu.edu/AcademicCalendar">Full academic calendar</a></section>'
+            '<script>(function(){var t=new Date().toISOString().slice(0,10);document.querySelectorAll(".keydates li[data-date]").forEach(function(l){if(l.dataset.date<t)l.hidden=true;});})();</script>')
+
+# Search: index written at build time as a JS file so it also works when opened from disk.
+KEYWORDS = {
+    "academic-help/tutoring": "tutor tutoring homework stuck class course study math physics calculus failing behind exam",
+    "academic-help/advising": "advisor advising drop withdraw hold holds registration register schedule classes degree requirements change major mywsu audit graduation ucore writing portfolio",
+    "academic-help/mentoring": "mentor mentoring peer boeing swe network",
+    "what-to-do": "help stuck failing drop withdraw hold change major emergency overwhelmed who ask transfer credits lost confused",
+    "wellness": "stress anxiety counseling mental health overwhelmed relax talk crisis 988 sleep lonely",
+    "paying-for-school/scholarships": "money scholarship scholarships fafsa aid tuition deans wuee pay cost",
+    "paying-for-school/emergency-aid": "emergency money rent food bills broke aid",
+    "careers": "job jobs internship internships career coach handshake co-op employer",
+    "careers/coaching": "coach coaching appointment book drop-in mock interview",
+    "careers/internships-propel": "propel credit engr 488 489 internship co-op paid",
+    "careers/career-fairs": "career fair fairs expo employers recruiters",
+    "careers/toolkit/resumes-cover-letters": "resume resumes cv cover letter",
+    "careers/toolkit/interviews-offers": "interview interviews offer salary negotiate star",
+    "careers/toolkit/job-search": "job search handshake linkedin careershift forage parker dewey",
+    "get-involved/clubs": "club clubs rso join society team organization",
+    "get-involved/maker-spaces": "3d print printer laser shop fiz machine build fabrication maker",
+    "visit": "tour tours visit prospective campus future cougs high school",
+    "first-year-transfer/transfer-students": "transfer credit credits equivalency community college",
+    "first-year-transfer/first-year-program": "first-year freshman engr 101 102",
+    "about/team": "staff directory contact email phone people",
+    "about/locations": "hours location where open office address map",
+}
+page("search", "Search", summary="Search the Student Resources site.", body=(
+    '<form class="search-page" action="" method="get"><label class="sr" for="sq">Search</label><input id="sq" name="q" type="search" placeholder="Try: tutoring, hold, internship, stress"><button class="btn">Search</button></form>'
+    '<div id="crisis-hit" class="crisis" hidden><strong>Need help now?</strong> Call or text <a href="tel:988">988</a>, call <a href="tel:911">911</a>, or visit the <a href="@@/wellness/">Wellness Center</a>.</div>'
+    '<ol id="results" class="results" data-base="@@/"></ol><p id="noresults" hidden>No matches. Try another word, or see <a href="@@/what-to-do/">What to do if</a>.</p>'
+    '<script src="@@/js/search-index.js"></script>'
+    '<script>(function(){var I=window.SEARCH_INDEX||[],b=document.getElementById("results").dataset.base,q=(new URLSearchParams(location.search).get("q")||"").trim();'
+    'var inp=document.getElementById("sq");inp.value=q;if(!q)return;var STOP=" a an and am are at be can do for from get how i im in is it me my of on or the to want what when where who with you ";'
+    'var w=q.toLowerCase().split(/[^a-z0-9]+/).filter(function(x){return x.length>1&&STOP.indexOf(" "+x+" ")<0;});'
+    'if(/crisis|suicid|988|hurt|emergency|unsafe/.test(q.toLowerCase()))document.getElementById("crisis-hit").hidden=false;'
+    'function hit(words,x){return words.some(function(v){return v===x||(x.length>3&&v.indexOf(x)===0)||(v.length>3&&x.indexOf(v)===0);});}'
+    'function words(t){return t.toLowerCase().split(/[^a-z0-9]+/);}'
+    'var r=I.map(function(p){var T=words(p.t),K=words(p.k),X=words(p.x),s=0;w.forEach(function(x){if(hit(T,x))s+=6;if(hit(K,x))s+=4;if(hit(X,x))s+=1;});return {p:p,s:s};})'
+    '.filter(function(o){return o.s>0;}).sort(function(a,c){return c.s-a.s;}).slice(0,10);'
+'var ol=document.getElementById("results");if(!r.length){document.getElementById("noresults").hidden=false;return;}'
+    'r.forEach(function(o){var li=document.createElement("li"),a=document.createElement("a");a.href=b+o.p.u;a.textContent=o.p.t;var sm=document.createElement("p");sm.textContent=o.p.s;li.appendChild(a);li.appendChild(sm);ol.appendChild(li);});})();</script>'))
+
+def build_search_index():
+    def text(h): return re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", re.sub(r"(?is)<script.*?</script>", " ", h))).strip()
+    idx = []
+    for slug, d in PAGES.items():
+        if slug == "search": continue
+        idx.append({"t": re.sub(r"<[^>]+>", "", d["title"]), "u": slug + "/", "k": KEYWORDS.get(slug, ""),
+                    "s": text(d["summary"])[:180], "x": text(d["summary"] + " " + (d["where"] or "") + " " + d["body"])[:1500]})
+    return "window.SEARCH_INDEX=" + json.dumps(idx, ensure_ascii=False) + ";"
+
+# Page owners and review dates. Longest matching prefix wins.
+OWNERS = {"": "[TBD: owner]", "academic-help/advising": "Advising", "academic-help/tutoring": "Tutoring", "careers": "Career Services",
+          "get-involved/clubs": "Club Hub", "club-advisors": "Club Hub", "get-involved/maker-spaces": "FIZ", "wellness": "Wellness Center",
+          "visit": "Recruiting", "employers": "Career Services", "about": "Student Success", "what-to-do": "Student Success", "search": "Student Success"}
+REVIEWED = {}  # slug -> "YYYY-MM-DD"; default below
+DEFAULT_REVIEWED = "2026-10-29"
+def owner_of(slug): return OWNERS[max((k for k in OWNERS if slug == k or slug.startswith(k + "/") or k == ""), key=len)]
+
 REDIRECTS = [("/advising/", "academic-help/advising"), ("/tutoring/", "academic-help/tutoring"), ("/tutoring/tutoring-schedule/", "academic-help/tutoring"),
  ("/tutoring/meet-your-tutors/", "academic-help/tutoring"), ("/mentorship-programs/", "academic-help/mentoring"), ("/internships-careers/", "careers"),
  ("/internships-careers/propel/", "careers/internships-propel"), ("/?page_id=254", "careers/internships-propel"),
@@ -514,7 +670,7 @@ def layout(slug, title, main, crumbs=""):
 <div class="wsu-bar"><div><span>Washington State University</span><ul>{util}</ul></div></div>
 <header class="site-header">
  <div class="brand"><div class="titles"><span class="kicker">Voiland College of Engineering and Architecture</span><a class="site-title" href="{base or './'}">{SITE_TITLE}</a><span class="byline">{BYLINE}</span></div>
-  <form class="search" role="search" action="#"><label class="sr" for="q">Search</label><input id="q" type="search" placeholder="Search"><button>Search</button></form>
+  <form class="search" role="search" action="{base}search/" method="get"><label class="sr" for="q">Search</label><input id="q" name="q" type="search" placeholder="Search"><button>Search</button></form>
   <button type="button" class="menu-toggle" aria-expanded="false" aria-controls="menu" aria-label="Open menu"></button></div>
  <nav aria-label="Primary" id="primary"><button type="button" class="menu-close">Close Menu</button><ul id="menu">{nav}</ul><ul class="util-mobile">{util}</ul></nav>
 </header>
@@ -554,6 +710,16 @@ def render(slug, d):
     if d["contact"]: main += d["contact"]
     if d["related"]:
         main += '<aside class="related"><h2>Related</h2><ul>' + "".join(f'<li><a href="@@/{s}/">{t}</a></li>' for t, s in d["related"][:4]) + "</ul></aside>"
+    if slug != "search":
+        if d["button"]:
+            main += f'<div class="next-step"><strong>Next step</strong>{btn(*d["button"])}</div>'
+        elif not d["contact"]:
+            main += '<div class="next-step"><strong>Questions?</strong><a class="btn btn-2" href="mailto:vcea.info@wsu.edu">Email Student Success</a></div>'
+        import datetime as _dt
+        rv = _dt.date.fromisoformat(REVIEWED.get(slug, DEFAULT_REVIEWED))
+        main += (f'<div class="feedback" data-page="{slug}"><span>Did this page help?</span><button type="button" data-v="yes">Yes</button><button type="button" data-v="no">No</button>'
+                 f'<span class="thanks" hidden>Thanks. <a href="mailto:vcea.info@wsu.edu?subject=Website%20feedback%3A%20{escape(d["title"])}">Tell us more</a></span></div>'
+                 f'<p class="page-meta">Page owner: {owner_of(slug)}. Last reviewed {rv.strftime("%B")} {rv.day}, {rv.year}.</p>')
     return layout(slug, d["title"], main, crumbs)
 
 ICON = {'book': 'M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2zM4 21V5M9 7h6', 'compass': 'M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zM15.5 8.5l-2 5-5 2 2-5z', 'brief': 'M3 8h18v12H3zM9 8V5h6v3M3 13h18', 'money': 'M12 3v18M16 7c0-1.7-1.8-3-4-3s-4 1.3-4 3 1.8 2.5 4 3 4 1.3 4 3-1.8 3-4 3-4-1.3-4-3', 'people': 'M9 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM3 20c0-3 2.7-5 6-5s6 2 6 5M17 10a2.5 2.5 0 1 0 0-5M18 15c2 .4 3 2 3 5', 'tool': 'M14 6a4 4 0 0 0 4 4l-9 9a2 2 0 0 1-3-3l9-9a4 4 0 0 0-1-1zM4 20l3-3', 'heart': 'M12 20s-8-5-8-11a4.5 4.5 0 0 1 8-2.5A4.5 4.5 0 0 1 20 9c0 6-8 11-8 11z', 'flag': 'M5 21V4M5 4h12l-2 4 2 4H5'}
@@ -567,24 +733,22 @@ def render_home():
              ('tool', "Build something", "FIZ and shops", "get-involved/maker-spaces"),
              ('heart', "Take a break", "Talk to someone at Wellness", "wellness"),
              ('flag', "New to Voiland College?", "Start here", "first-year-transfer")]
+    glance = '<ul class="today" aria-label="Today at a glance">' + "".join(
+        f'<li><strong>{x["name"]}</strong>{status_span(x, x["place"] + ", ")}<a href="{x["link"][1]}">{x["link"][0]}</a></li>'
+        for x in SERVICES if x.get("home")) + "</ul>"
     t = "".join(f'<li><a class="task" href="@@/{s}/"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="{ICON[i]}"/></svg><span><strong>{x}</strong><small>{h}</small></span></a></li>' for i, x, h, s in tasks)
     main = f"""<section class="hero-slim"><div><h1>{SITE_TITLE}</h1>
 <p class="lede">Free support to help you succeed in class, on your career path, and beyond.</p></div></section>
 <h2 class="sr">I want to…</h2><ul class="tasks">{t}</ul>
-<ul class="today" aria-label="Today at a glance">
- <li><strong>Tutoring</strong><span>SEH 130, Mon to Fri</span><a href="https://tutoring.wsu.edu/">See today's tutors</a></li>
- <li><strong>Career drop-in today</strong><span id="career-today">SEH 102</span><a href="@@/careers/">See all hours</a></li>
- <li><strong>Campus visits</strong><span id="visit-today">Noon Mon to Sat, 2:30 pm Fri</span><a href="@@/visit/">Sign up for a visit</a></li>
- <li><strong>Wellness Center</strong><span>Daggy Hall, Mon to Fri, 9 to 4</span><a href="tel:988">Crisis? Call or text 988</a></li>
-</ul>
+<p class="start-here">Not sure where to start? <a href="@@/what-to-do/">See what to do if you are stuck</a></p>
+{glance}
 <div class="strip">
+ {key_dates_html()}
  <section data-autohide="empty"><h2>Upcoming events</h2><p>[TBD: auto feed, 3–4 items; hide section when empty]</p><a class="arrow-link" href="@@/get-involved/events/">More events</a></section>
  <section data-autohide="empty"><h2>Student Spotlights</h2><p>[TBD: rotating profile]</p><a class="arrow-link" href="@@/get-involved/spotlights/">Browse all spotlights</a></section>
  <section data-autohide="older-than-semester"><h2>News</h2><p>[TBD: latest 3 posts; auto-hide older than one semester]</p></section>
 </div>
-<script>(function(){{var d={{1:"Mon 2–3 pm",2:"Tue 12–1 pm",3:"Wed 3–4 pm",4:"Thu 12–1 pm",5:"Fri 2–3 pm"}}[new Date().getDay()];
-var v=document.getElementById("visit-today"),g=new Date().getDay();if(v)v.textContent=g===0?"No visits today":g===5?"Today: noon and 2:30 pm":"Today: noon";
-var e=document.getElementById("career-today");if(e)e.textContent=d?"SEH 102, "+d:"No drop-in today";}})();</script>"""
+"""
     return layout("", "Home", main)
 
 SVG = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {w} {h}" role="img"><rect width="100%" height="100%" fill="{bg}"/><text x="50%" y="50%" fill="{fg}" font-family="sans-serif" font-size="{fs}" text-anchor="middle" dominant-baseline="middle">{t}</text></svg>'
@@ -814,6 +978,26 @@ nav[aria-label=Primary]>ul.util-mobile{display:none}
 .task strong{font-size:1rem;font-weight:700}
 .task small{font-size:.8rem;margin-top:2px;color:var(--gray)}
 .task:hover{box-shadow:0 3px 10px rgba(0,0,0,.2)}
+/* student-first features */
+.start-here{margin:2px 0 12px;font-size:.9rem}.start-here a{font-weight:600}
+.next-step{display:flex;flex-wrap:wrap;align-items:center;gap:12px 18px;margin:32px 0 8px;padding:18px 20px;background:#fff;border-top:6px solid var(--crimson);box-shadow:0 1px 4px rgba(0,0,0,.12)}
+.next-step strong{font-size:1.05rem}
+.feedback{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin:24px 0 4px;font-size:.9rem}
+.feedback button{font:600 .85rem Montserrat,sans-serif;padding:6px 16px;border:2px solid var(--crimson);background:#fff;color:var(--crimson);border-radius:6px;cursor:pointer}
+.feedback button:disabled{opacity:.5;cursor:default}
+.page-meta{font-size:.78rem;color:var(--gray);margin:4px 0 0}
+.finder{background:#fff;padding:18px 20px!important;box-shadow:0 1px 4px rgba(0,0,0,.12);margin:8px 0 24px}
+.finder label{display:block;font-weight:600;margin-bottom:6px}
+.finder select{font:inherit;font-size:1rem;padding:10px 12px;min-width:min(100%,360px);border:1px solid #8a8a8a;border-radius:4px;background:#fff}
+.situations details{background:#fff;margin:10px 0;padding:0}.situations summary{padding:16px 18px;font-size:1.05rem}
+.situations details>div{padding:0 18px 12px}
+.search-page{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}.search-page input{flex:1;min-width:220px;font:inherit;padding:10px 14px;border:1px solid #8a8a8a;border-radius:4px}
+.results{padding-left:1.2em}.results li{margin:0 0 14px}.results a{font-weight:600;font-size:1.05rem}.results p{margin:2px 0 0;color:var(--gray);font-size:.9rem}
+.keydates ul{list-style:none;padding:0;margin:6px 0 10px}.keydates li{display:flex;gap:12px;align-items:flex-start;margin-bottom:10px}
+.kd-date{display:flex;flex-direction:column;align-items:center;min-width:46px;font-size:1.5rem;font-weight:700;line-height:1;color:var(--gray)}
+.kd-date b{font-size:.7rem;letter-spacing:.08em;color:var(--crimson);margin-bottom:3px}
+.keydates li>span:last-child{display:flex;flex-direction:column;font-size:.9rem}.keydates small{color:var(--gray)}
+.strip .keydates a.ics,.strip .keydates li a{display:inline;font-size:.85rem}.strip .keydates li a:before{content:none}
 """
 
 JS = """(function(){
@@ -827,6 +1011,16 @@ if(bd)bd.addEventListener('click',function(){setMenu(false);});
 document.querySelectorAll('.sub-toggle').forEach(function(b){b.addEventListener('click',function(e){e.stopPropagation();var o=b.getAttribute('aria-expanded')!=='true';closeAll(b);b.setAttribute('aria-expanded',o);});});
 document.addEventListener('click',function(e){if(!e.target.closest('.has-sub'))closeAll();});
 document.addEventListener('keydown',function(e){if(e.key==='Escape'){closeAll();setMenu(false);}});
+var DAYS=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+function pt(){var p={};new Intl.DateTimeFormat('en-US',{timeZone:'America/Los_Angeles',weekday:'short',hour:'numeric',minute:'numeric',hour12:false}).formatToParts(new Date()).forEach(function(x){p[x.type]=x.value;});return {d:DAYS.indexOf(p.weekday),h:(parseInt(p.hour,10)%24)+parseInt(p.minute,10)/60};}
+function fmt(h){var hr=Math.floor(h),m=Math.round((h-hr)*60);if(hr===12&&!m)return 'noon';var ap=hr>=12?'pm':'am',h12=hr%12||12;return h12+(m?':'+(m<10?'0':'')+m:'')+' '+ap;}
+function stat(S,k){var n=pt(),t=S[n.d]||[],i,j,r;for(i=0;i<t.length;i++){if(n.h>=t[i][0]&&n.h<t[i][1])return k==='event'?'Happening now':'Open now, until '+fmt(t[i][1]);}
+ r=t.filter(function(x){return x[0]>n.h;});if(r.length)return (k==='event'?'Today at ':'Opens today at ')+r.map(function(x){return fmt(x[0]);}).join(' and ');
+ for(j=1;j<=7;j++){var dd=(n.d+j)%7;if(S[dd]&&S[dd].length)return (k==='event'?'Next: ':'Closed now. Opens ')+DAYS[dd]+' at '+fmt(S[dd][0][0]);}return '';}
+document.querySelectorAll('.status[data-sched]').forEach(function(el){try{var s=stat(JSON.parse(el.getAttribute('data-sched')),el.getAttribute('data-kind'));if(s)el.textContent=(el.getAttribute('data-prefix')||'')+s;}catch(e){}});
+function track(o){if(window.dataLayer)window.dataLayer.push(o);}
+document.querySelectorAll('.feedback button').forEach(function(b){b.addEventListener('click',function(){var f=b.closest('.feedback');track({event:'page_feedback',page:f.getAttribute('data-page'),value:b.getAttribute('data-v')});f.querySelectorAll('button').forEach(function(x){x.disabled=true;});f.querySelector('.thanks').hidden=false;});});
+document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('a.btn');if(a)track({event:'cta_click',label:a.textContent.trim(),href:a.getAttribute('href')});});
 })();"""
 
 def main():
@@ -841,6 +1035,10 @@ def main():
     if ASSETS.exists():  # real photos dropped in Assets/ override placeholders
         for f in ASSETS.iterdir():
             if f.is_file(): shutil.copy(f, SITE / "img" / f.name)
+    (SITE / "js").mkdir(); (SITE / "dates").mkdir()
+    (SITE / "js" / "search-index.js").write_text(build_search_index())
+    for d, t, detail, _ in DATES:
+        (SITE / "dates" / ics_name(d, t)).write_text(ics(d, t, detail), newline="")
     (SITE / "index.html").write_text(render_home())
     for slug, d in PAGES.items():
         out = SITE / slug / "index.html"; out.parent.mkdir(parents=True, exist_ok=True); out.write_text(render(slug, d))
@@ -849,6 +1047,8 @@ def main():
         w = csv.writer(f); w.writerow(["old", "new"]); [w.writerow([o, base + n + "/"]) for o, n in REDIRECTS]
     (SITE / "_redirects").write_text("".join(f"{o.split('?')[0] if '?' not in o else o} {base}{n}/ 301\n" for o, n in REDIRECTS))
     missing = [n for _, n in REDIRECTS if n not in PAGES]
+    unowned = [k for k in PAGES if "TBD" in owner_of(k)]
+    if unowned: print(f"{len(unowned)} pages still need an owner (see OWNERS in build.py)")
     print(f"Built {len(PAGES) + 1} pages, {len(REDIRECTS)} redirects", "| BAD REDIRECT TARGETS: %s" % missing if missing else "")
 
 if __name__ == "__main__": main()

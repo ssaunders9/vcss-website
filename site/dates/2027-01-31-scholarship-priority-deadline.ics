@@ -1,0 +1,12 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//VCEA Student Success//EN
+BEGIN:VEVENT
+UID:20270131-scholarship-priority-deadline@vcea-student-success
+DTSTAMP:20261029T000000Z
+DTSTART;VALUE=DATE:20270131
+DTEND;VALUE=DATE:20270201
+SUMMARY:Scholarship priority deadline
+DESCRIPTION:WSU General Scholarship Application
+END:VEVENT
+END:VCALENDAR
