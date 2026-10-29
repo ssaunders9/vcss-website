@@ -267,3 +267,4 @@ th .rival{background:#4B2E83;color:#fff}
 th .rival{background:none;color:#4B2E83;font-weight:600;opacity:1}
 .stat .rival{font-size:inherit}
 .win{color:var(--crimson);font-weight:800;font-size:1.05em}
+.rival-ore{color:#B5390A;font-weight:400;opacity:.9}th .rival-ore{font-weight:600;opacity:1}

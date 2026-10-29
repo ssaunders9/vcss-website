@@ -822,6 +822,13 @@ CN_W = ("College Navigator: WSU", CN_W_URL); CN_U = ("College Navigator: Seattle
 WSU_NPC_URL = "https://financialaid.wsu.edu/price-calculator/"
 CN = {"wsu": dict(total_in=31219, total_out=47778, housing=13622, tuition_in=13391, tuition_out=29950, admit=87),
       "sea": dict(total_in=35305, total_out=65541, housing=18405, tuition_in=12973, tuition_out=43209, admit=39)}
+# Oregon comparison school (College Navigator 2024-25; net price 2023-24; admissions fall 2024) and Scorecard first-year earnings
+CN_O_URL = "https://nces.ed.gov/collegenavigator/?id=209542"; SC_O_URL = "https://collegescorecard.ed.gov/school/?209542-Oregon-State-University"
+CN_O = ("College Navigator: Oregon comparison school", CN_O_URL); SC_O = ("College Scorecard: Oregon comparison school", SC_O_URL)
+CN["ore"] = dict(total_in=34878, total_out=58668, housing=16386, admit=77, net_2324=22467)
+CN["wsu"]["net_2324"] = 18171
+ORE_MAJORS = [("Mechanical Engineering", 78276, 76837), ("Civil Engineering", 74997, 73900), ("Chemical Engineering", 80564, 78780)]
+def og(x): return f'<span class="rival-ore">{x}</span>'   # Oregon comparison school: quiet orange text
 GAP_IN = CN["sea"]["total_in"] - CN["wsu"]["total_in"]; GAP_OUT = CN["sea"]["total_out"] - CN["wsu"]["total_out"]
 GAP_HOUSING = CN["sea"]["housing"] - CN["wsu"]["housing"]; GAP_TUIT_OUT = CN["sea"]["tuition_out"] - CN["wsu"]["tuition_out"]
 FED_CAT = {"Electrical Engineering": "Electrical, Electronics, and Communications Engineering", "Construction Management": "Construction Engineering Technology [VERIFY: WSU reports Construction Management under this category]",
@@ -854,6 +861,19 @@ page("cost-and-value", "Why Voiland College Costs Less", summary=(
            + p("Pell Grant recipients earn the same as everyone else: in mechanical engineering, $78,564 for Pell recipients compared with $78,276 overall.")
            + p(f"Median monthly federal loan payments for WSU graduates in these majors run from {usd(min(PAYS))} to {usd(max(PAYS))}, on a standard 10-year plan.")
            + src(SC_W, note="Earnings: 2020-21 and 2021-22 graduates, one year after graduating, in 2024 dollars. Loan payments: 2022-23 and 2023-24 graduates"))
+     + sec("Choosing between WSU and " + og("Oregon"), table(["2024-25, living on campus", "WSU Pullman", og("Oregon land-grant"), "You save at WSU"], [
+                ["Washington student, full out-of-state price in Oregon", usd(CN["wsu"]["total_in"]), og(usd(CN["ore"]["total_out"])), win(usd(CN["ore"]["total_out"] - CN["wsu"]["total_in"]))],
+                ["Washington student with WUE in Oregon", usd(CN["wsu"]["total_in"]), og("at least " + usd(CN["ore"]["total_in"])), win("at least " + usd(CN["ore"]["total_in"] - CN["wsu"]["total_in"]))],
+                ["Out-of-state student at either school, full price", usd(CN["wsu"]["total_out"]), og(usd(CN["ore"]["total_out"])), win(usd(CN["ore"]["total_out"] - CN["wsu"]["total_out"]))],
+                ["Food and housing", usd(CN["wsu"]["housing"]), og(usd(CN["ore"]["housing"])), win(usd(CN["ore"]["housing"] - CN["wsu"]["housing"]))],
+                ["Average net price after aid, in-state students (2023-24)", usd(CN["wsu"]["net_2324"]), og(usd(CN["ore"]["net_2324"])), win(usd(CN["ore"]["net_2324"] - CN["wsu"]["net_2324"]))]])
+           + p(f"WUE tuition is 150 percent of in-state tuition, so a Washington student on WUE in Oregon pays at least that school's full in-state budget of {usd(CN['ore']['total_in'])}. "
+               f"That is already {usd(CN['ore']['total_in'] - CN['wsu']['total_in'])} a year more than staying home at WSU, before the WUE premium is added.")
+           + p(f"WSU also admits more students: {CN['wsu']['admit']} percent in fall 2024, compared with {og(str(CN['ore']['admit']) + ' percent')} in Oregon.")
+           + src(CN_W, CN_O, ("WICHE: Western Undergraduate Exchange", WUE_URL), note="Published budgets for beginning students, 2024-25; net price 2023-24; admission rates, fall 2024")
+           + table(["Major", "WSU graduates, first year", og("Oregon graduates, first year")], [[m, win(usd(w)), og(usd(o))] for m, w, o in ORE_MAJORS])
+           + p("In mechanical, civil and chemical engineering, WSU graduates out-earn the Oregon land-grant's in their first year.")
+           + src(SC_W, SC_O, note="Median earnings one year after graduating, 2020-21 and 2021-22 graduates who received federal aid, in 2024 dollars"))
      + sec("Out-of-state? It gets better", p(f"WSU's out-of-state tuition and fees are already {usd(GAP_TUIT_OUT)} a year below the Seattle flagship's (2024-25). "
                                               "Students from Western Undergraduate Exchange states can add the WUE Distinguished Cougar Award and Voiland College's $2,000-a-year WUEE Scholarship, which together close the gap between in-state and out-of-state tuition. [VERIFY: amounts for 2027-28]")
            + src(CN_W, CN_U, ("Voiland College scholarships", VCEA_SCHOLARSHIPS_URL), ("WICHE: Western Undergraduate Exchange", WUE_URL)))
@@ -877,6 +897,7 @@ page("cost-and-value", "Why Voiland College Costs Less", summary=(
                           f'<a href="{WSU_NPC_URL}">WSU net price calculator</a>',
                           f'<a href="{SCORECARD_URL}">U.S. Department of Education College Scorecard: Washington State University</a> (earnings and loan payments by major)',
                           f'<a href="{UW_SCORECARD_URL}">U.S. Department of Education College Scorecard: Seattle comparison school</a>',
+                          f'<a href="{CN_O_URL}">NCES College Navigator: Oregon comparison school</a>', f'<a href="{SC_O_URL}">U.S. Department of Education College Scorecard: Oregon comparison school</a>',
                           f'<a href="{SC_DICT_URL}">College Scorecard data and definitions</a> (data release of October 15, 2026)',
                           f'<a href="{VCEA_SCHOLARSHIPS_URL}">Voiland College Student Success: Scholarships</a>', f'<a href="{VCEA_CLUBHUB_URL}">Voiland College Student Success: Club Hub</a>',
                           f'<a href="{WUE_URL}">WICHE: Western Undergraduate Exchange</a>'])
@@ -1294,6 +1315,7 @@ th .rival{background:#4B2E83;color:#fff}
 th .rival{background:none;color:#4B2E83;font-weight:600;opacity:1}
 .stat .rival{font-size:inherit}
 .win{color:var(--crimson);font-weight:800;font-size:1.05em}
+.rival-ore{color:#B5390A;font-weight:400;opacity:.9}th .rival-ore{font-weight:600;opacity:1}
 """
 
 JS = """(function(){
