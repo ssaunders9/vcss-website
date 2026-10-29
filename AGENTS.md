@@ -44,6 +44,10 @@ Static site skeleton for the Voiland College Student Resources site (planned for
 - `Assets/` holds real photos (flat, optimized); `Assets/source/` holds the downloaded originals. Files in `Assets/` are copied into `site/img/` on build.
 - CSS is one string in `build.py`, built in order: later blocks override earlier ones. Append new rules at the end, not at the top.
 - `VCEA_Student_Success_Content_Capture.md` is the raw capture of the current site; use it as a fact source, do not copy prose.
+- **Hours and locations live only in `SERVICES`** in `build.py`. It feeds the Locations page, the homepage glance row and the live "open now" status (Pacific time). Change hours there, nowhere else.
+- Other data tables in `build.py`: `MAJORS` (advisor finder and requirements table), `SITUATIONS` ("What to do if" page), `DATES` (key dates and `.ics` files; only real dates), `KEYWORDS` (search vocabulary per page), `OWNERS` and `REVIEWED` (page owner and review date shown on each page).
+- After building, run `/config/workspace/.venv/bin/python _Scripts/check_site.py` (links, alt text, headings, form labels, contrast). It should report 0 problems.
+- tutoring.wsu.edu requires a WSU login, and most WSU department sites block automated fetches. Do not try to get around either.
 
 ## Conventions
 
