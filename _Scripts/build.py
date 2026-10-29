@@ -856,6 +856,11 @@ page("cost-and-value", "Why Voiland College Costs Less", summary=(
                  rv(usd(CN["sea"]["total_in"])) + "<br><small>in-state</small>" + f'<br><small class="saves">WSU saves {usd(CN["sea"]["total_in"] - CN["wsu"]["total_in"])}</small>',
                  og(usd(CN["ore"]["total_out"])) + "<br><small>full out-of-state price</small>" + f'<br><small class="saves">WSU saves {usd(CN["ore"]["total_out"] - CN["wsu"]["total_in"])}</small>'
                  + f'<br><small>With WUE: {og("at least " + usd(CN["ore"]["total_in"]))}</small>' + f'<br><small class="saves">WSU saves at least {usd(CN["ore"]["total_in"] - CN["wsu"]["total_in"])}</small>'],
+                ["<strong>You live in Oregon</strong><br><small>WSU with the WUE Distinguished Cougar Award and the $2,000 WUEE Scholarship. Seattle at out-of-state price. Oregon at in-state price.</small>",
+                 win("about " + usd(CN["wsu"]["total_in"])) + "<br><small>with WUE + WUEE</small>"
+                 + "<br><small>[VERIFY: assumes WUE + WUEE bring tuition to the in-state rate, as the Voiland scholarships page says; confirm the award amount and eligibility]</small>",
+                 rv(usd(CN["sea"]["total_out"])) + "<br><small>full out-of-state price</small>" + f'<br><small class="saves">WSU saves about {usd(CN["sea"]["total_out"] - CN["wsu"]["total_in"])}</small>',
+                 og(usd(CN["ore"]["total_in"])) + "<br><small>in-state</small>" + f'<br><small class="saves">WSU saves about {usd(CN["ore"]["total_in"] - CN["wsu"]["total_in"])}</small>'],
                 ["<strong>You live in another state</strong><br><small>Not Washington or Oregon. Full out-of-state price at all three, before WUE and scholarships.</small>",
                  win(usd(CN["wsu"]["total_out"])), cmp_cell(CN["sea"]["total_out"], CN["wsu"]["total_out"], rv), cmp_cell(CN["ore"]["total_out"], CN["wsu"]["total_out"], og)],
                 ["Food and housing<br><small>Part of the totals above, same for everyone</small>", win(usd(CN["wsu"]["housing"])), cmp_cell(CN["sea"]["housing"], CN["wsu"]["housing"], rv), cmp_cell(CN["ore"]["housing"], CN["wsu"]["housing"], og)],
@@ -865,7 +870,7 @@ page("cost-and-value", "Why Voiland College Costs Less", summary=(
            + p(f"Tuition for Washington residents is nearly the same at WSU and in Seattle. The difference is living costs: food and housing in Pullman cost {usd(CN['sea']['housing'] - CN['wsu']['housing'])} less than in Seattle "
                f"and {usd(CN['ore']['housing'] - CN['wsu']['housing'])} less than in Oregon.")
            + p(f'Total cost includes tuition and fees, books and supplies, food and housing, and other expenses. Your family\'s price after aid depends on income: try <a href="{WSU_NPC_URL}">WSU\'s net price calculator</a>.')
-           + src(CN_W, CN_U, CN_O, ("WICHE: Western Undergraduate Exchange", WUE_URL), note="Published budgets for full-time beginning students, 2024-25; admission rates, fall 2024"))
+           + src(CN_W, CN_U, CN_O, ("WICHE: Western Undergraduate Exchange", WUE_URL), ("Voiland College scholarships", VCEA_SCHOLARSHIPS_URL), note="Published budgets for full-time beginning students, 2024-25; admission rates, fall 2024. Oregon row assumes WUE and WUEE close the tuition gap"))
      + sec("Side by side: starting salaries", table(["Major", "WSU graduates", rv("Seattle graduates"), og("Oregon graduates")],
                 [[m, win(usd(w)), rv(usd(u)), og(usd(o))] for m, w, u, o in THREE_MAJORS])
            + p("In mechanical, civil and electrical engineering, WSU graduates start within about 2 percent of both schools, and ahead of Oregon in mechanical and civil, after paying less to get there.")
