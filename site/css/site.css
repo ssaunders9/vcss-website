@@ -204,3 +204,8 @@ nav[aria-label=Primary]>ul.util-mobile{display:none}
 .btn{display:inline-flex;align-items:center;justify-content:center;min-height:48px;box-sizing:border-box;line-height:1.2;text-align:center}
 .hero-slim h1{font-size:clamp(1.9rem,4.2vw,3.1rem)}
 @media (max-width:820px){nav[aria-label=Primary]>ul.util-mobile{display:block}}
+/* at-a-glance row: four across, two by two on tablets, stacked on phones */
+.today{grid-template-columns:repeat(4,1fr)}
+.today li{font-size:.85rem;line-height:1.45}
+@media (max-width:1040px){.today{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:560px){.today{grid-template-columns:1fr}}
