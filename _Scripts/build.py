@@ -627,6 +627,132 @@ REVIEWED = {}  # slug -> "YYYY-MM-DD"; default below
 DEFAULT_REVIEWED = "2026-10-29"
 def owner_of(slug): return OWNERS[max((k for k in OWNERS if slug == k or slug.startswith(k + "/") or k == ""), key=len)]
 
+
+# ---------- build-out of thin pages (facts from the content capture and VCEA program documents) ----------
+page("first-year-transfer", "First-Year & Transfer", summary="Welcome to Voiland College. Here is how to get started, whether you came straight from high school or transferred in.",
+     body=cards([("First-Year Program", "ENGR 101 and 102: your first courses in the college.", "@@/first-year-transfer/first-year-program/", "Learn more"),
+                 ("Transfer Students", "Credits, advising and getting connected fast.", "@@/first-year-transfer/transfer-students/", "Learn more"),
+                 ("New Student Checklist", "What to do before classes and in your first month.", "@@/first-year-transfer/new-student-checklist/", "Open checklist")], "card-firstyear.svg")
+     + sec("Your first semester at a glance", ul(["Your advisor is assigned at New Coug Orientation. " + L("@@/academic-help/advising/", "Find your advising office") + ".",
+                                                  "Free drop-in tutoring is in SEH 130, Monday to Friday. " + L("@@/academic-help/tutoring/", "Tutoring") + ".",
+                                                  "A peer mentor who has been where you are. " + L("@@/academic-help/mentoring/", "Mentoring") + ".",
+                                                  "40+ clubs, open to every student with no experience needed. " + L("@@/get-involved/clubs/", "Clubs") + "."]))
+     + sec("Questions?", p("First-year students: Kimberlee Hughes, " + mail("kimberlee.hughes@wsu.edu") + ". Transfer students: Alena Hume, " + mail("alena.hume@wsu.edu") + ".")))
+
+page("first-year-transfer/first-year-program", "First-Year Program (ENGR 101/102)", "first-year-transfer",
+     "ENGR 101 and ENGR 102 are Voiland College's first-year courses, part of the First Year Inquiry (FYI) program. They introduce the college's support services, the skills engineering students need, and the range of majors you can choose from.", None, None,
+     sec("The courses", table(["Course", "Theme", "What you do"], [
+         ["ENGR 101", "Starting your engineering portfolio", "Make the move from high school to engineering: WSU resources, study habits and your first résumé"],
+         ["ENGR 102", "Filling your engineering portfolio", "Explore the disciplines and majors and build your portfolio with projects"],
+         ["ENGR 107", "Math for engineering", "For students who are not yet calculus-ready: math concepts tied to engineering problems"],
+         ["ENGR 390", "Engineering Leadership", "Leadership and professional skills; also trains the peer coordinators who lead ENGR 101 and 102 sections"]]))
+     + sec("What a week looks like", ul(["A discussion session led by a peer coordinator", "“Experience Engineering” trips and tours of labs and facilities", "Team projects built in the Frank Innovation Zone (FIZ)"])
+           + p("[VERIFY: current days and format with the course instructor]"))
+     + sec("Who teaches it", p("Kimberlee Hughes is the instructor. Every section is led by a peer coordinator, an upper-division engineering student who is your first point of contact."))
+     + sec("How it fits your major", p("Check your major's schedule of study to see where ENGR 101 and 102 fit. In Bioengineering, they replace ENGR 120. [VERIFY: which majors require the sequence]")
+           + p(L("@@/academic-help/advising/", "Find your major's requirements") + "."))
+     + sec("Become a peer coordinator", p("Upper-division students can lead a first-year section. Peer coordinators are trained through ENGR 390. [TBD: how and when to apply]"))
+     + sec("More first-year support", ul([L("@@/academic-help/tutoring/", "Free tutoring") + " in SEH 130", L("@@/academic-help/mentoring/", "Voiland Peer Network") + " mentors",
+                                         L("@@/academic-help/advising/", "Academic advising"), L("@@/wellness/", "Wellness Center") + " in Daggy Hall"])),
+     contact("Kimberlee Hughes", "Instructor, First-Year Engineering", "kimberlee.hughes@wsu.edu", "509-335-2888", "SEH 126E"))
+
+page("first-year-transfer/transfer-students", "Transfer Students", "first-year-transfer",
+     "Transferring into Voiland College? Start with the transfer coordinator, check how your credits came in, and get connected in your first weeks.", None, None,
+     sec("Your first steps", ol(["Meet the transfer coordinator, Alena Hume, to review your plan.",
+                                 "Open your Academic Requirements report in myWSU and check how each transfer course was counted.",
+                                 "If a course did not transfer the way you expected, bring its syllabus to the transfer coordinator. [VERIFY: review process]",
+                                 "Meet your " + L("@@/academic-help/advising/", "major's advising office") + " to plan the semesters ahead.",
+                                 "Join the " + L("@@/academic-help/mentoring/", "Voiland Peer Network") + ", which matches transfer students with an experienced peer."]))
+     + sec("Credits and equivalencies", p("WSU's transfer course equivalency tool shows how courses from other schools count at WSU. [TBD: link]. Certification into your major depends on specific courses and grades, so check your major's requirements early."))
+     + sec("Scholarships for transfers", p("Pullman transfer students who have completed the calculus series and the calculus-based physics or chemistry series with a 3.4 GPA or higher are considered for the Dean's Scholarship. " + L("@@/paying-for-school/scholarships/", "Scholarships") + "."))
+     + sec("Get connected fast", ul(["Pick a club in your field: " + L("@@/get-involved/clubs/", "club directory"), "Build something in the " + L("@@/get-involved/maker-spaces/", "FIZ"),
+                                    "Drop in at " + L("@@/careers/", "Career Services") + " in SEH 102 about internships"]))
+     + sec("Questions transfers ask", faq([("Do I take ENGR 101 and 102?", "It depends on your major and what transferred. Ask the transfer coordinator. [VERIFY]"),
+                                           ("My course came in as elective credit. Can that change?", "Sometimes. Bring the syllabus to the transfer coordinator for a review.")])),
+     contact("Alena Hume", "Academic Advisor and Transfer Coordinator", "alena.hume@wsu.edu", "509-335-5376", "SEH 126A"))
+
+page("first-year-transfer/new-student-checklist", "New Student Checklist", "first-year-transfer", "Ten things to do in your first semester, in order.", None, None,
+     sec("Before classes start", check(['<a href="@@/academic-help/advising/">Find your advising office</a> and note your advisor\'s name',
+                                        "Open your Academic Requirements report in myWSU",
+                                        'Save the <a href="@@/about/locations/">hours and locations page</a> on your phone']))
+     + sec("First two weeks", check(['Visit <a href="@@/academic-help/tutoring/">tutoring in SEH 130</a> before you need it, so you know the space',
+                                     'Find a <a href="@@/get-involved/clubs/">club</a> and go to one meeting (club fair date: [TBD])',
+                                     'Stop by the <a href="@@/wellness/">Wellness Center</a> in Daggy Hall 101']))
+     + sec("First month", check(['Create your <a href="https://wsu.joinhandshake.com/">Handshake</a> profile and upload a résumé',
+                                 'Visit the <a href="@@/get-involved/maker-spaces/">FIZ</a> in Dana Hall']))
+     + sec("Before you register for next semester", check(["Check myWSU for registration holds", 'Meet your advisor and bring your questions',
+                                                           'Apply for scholarships by the January 31 priority deadline: <a href="@@/paying-for-school/scholarships/">Scholarships</a>'])))
+
+page("paying-for-school/emergency-aid", "Emergency Aid", "paying-for-school",
+     "Help for an unexpected cost that puts your classes at risk. [TBD: final wording once the VCEA emergency scholarship policy is approved]",
+     ("Ask for emergency aid", "mailto:vcea.info@wsu.edu?subject=Emergency%20aid%20request"), None,
+     sec("Who can ask", p("Voiland College students facing a sudden, one-time expense. [TBD: eligibility from the policy]"))
+     + sec("What it can help with", p("[TBD: covered costs from the policy]. If you are not sure whether your situation fits, ask anyway."))
+     + sec("How to ask", ol(["Email " + mail("vcea.info@wsu.edu") + " with “Emergency aid” in the subject.", "Say briefly what happened, what it costs, and when you need the money.",
+                            "Someone from Student Success will contact you. [TBD: response time]"]))
+     + sec("Privacy", p("Requests are handled by a small number of staff and are not shared with your instructors. [VERIFY: confidentiality language with the policy]"))
+     + sec("Other help right now", ul(["WSU Office of Student Financial Aid: ask about adjusting your aid package [TBD: link]", "WSU Dean of Students emergency and basic needs resources [TBD: link]",
+                                      L("@@/wellness/", "Wellness Center") + " if the stress is building", L("@@/paying-for-school/scholarships/", "Scholarships") + " for longer-term costs"]))
+     + sec("Questions", faq([("Is it a loan?", "[TBD: per policy]"), ("Can it affect my financial aid?", "Outside aid can change an aid package. Check with Financial Aid. [VERIFY]")])),
+     contact("Student Success", None, "vcea.info@wsu.edu", "509-335-5050"))
+
+page("get-involved/entrepreneurship", "Entrepreneurship", "get-involved",
+     "The Harold Frank Engineering Entrepreneurship Institute brings engineering, business and communications students together to turn technology ideas into ventures.",
+     ("Visit the Frank Institute", "#"), None,
+     sec("What students can do", ul(["Join a cross-disciplinary team with business and communications students", "Compete in the business plan competition (past teams, such as PicsGenie, have won awards)",
+                                     "Get mentoring on taking a product to market [TBD: confirm current offerings]", "Find funding for early prototypes [TBD]"]))
+     + sec("Build your prototype", p("Use the " + L("@@/get-involved/maker-spaces/", "FIZ and fabrication labs") + " to make the first version of your idea."))
+     + sec("Related", ul([L("@@/get-involved/clubs/", "Student clubs") + " for teammates and projects", L("@@/careers/", "Career Services") + " for startup internships"])),
+     contact("Frank Institute", "[TBD: contact name]", "[TBD]"))
+
+page("get-involved/events", "Events", "get-involved", "Signature Voiland College events through the year, plus the live events feed.", None, None,
+     cards([("Innovation Expo", "Each spring, clubs show their projects in Beasley Coliseum. Judges give a Dean's Award to the club that best represents the college, presented at the Student Excellence Awards. 2027 date: [TBD]", "#", "Details"),
+            ("Senior Capstone Expo", "Seniors present their capstone design projects. April 15, [TBD: year and location]", "#", "Details"),
+            ("Career Fairs", "WSU Career Expos each fall and spring, plus the Technical Fair.", "@@/careers/career-fairs/", "See fairs"),
+            ("Career Networking Mixer", "Meet employers in a relaxed setting. [TBD: date]", "@@/careers/", "Careers"),
+            ("Evening with Industry", "Club-sponsored evenings where students talk with professionals in their field. [TBD: dates by club]", "@@/get-involved/clubs/", "Clubs"),
+            ("Ice Cream Socials", "Meet the Student Success team and other students. [TBD: dates]", "#", "Details")])
+     + sec("All upcoming events", p("[TBD: automatic feed of student events; hide this section when empty]"))
+     + sec("Hosting an event?", p("Clubs can promote events on the college's digital signage. " + L("@@/club-advisors/", "See flyer specs") + ".")))
+
+page("give", "Give", summary="Your gift reaches students directly: club competitions, the Innovation Expo, emergency aid and the Wellness Center.", button=("Give now", "#"),
+     body=sec("What gifts support", cards([("Student clubs", "Travel to national competitions, project materials and tools for 40+ clubs.", "#", "Give to a club"),
+                                           ("Emergency aid", "One-time help so a sudden expense does not end a student's semester.", "#", "Give"),
+                                           ("Wellness Center", "A space to relax, recharge and talk with a peer supporter.", "#", "Give"),
+                                           ("Innovation Expo", "The spring showcase where clubs present their work.", "@@/employers/", "Sponsor")]))
+     + sec("Other ways to help", ul(["Donate materials, equipment or services: contact Fernanda Amaral, " + mail("f.amaral@wsu.edu"), "Mentor a student: " + L("@@/academic-help/mentoring/", "Mentoring"),
+                                    "Host interns or recruit: " + L("@@/employers/", "Employers")]))
+     + sec("Impact", p("[TBD: one donor or student story, and a few numbers such as clubs supported or students helped]")),
+     contact_card=contact("Giving questions", None, "[TBD]"))
+
+SPOTLIGHTS = [("Betty Mitchell", "Civil engineering", "Graduating December 2026"), ("Brandon Swinger", "Civil engineering", "Graduating fall 2028"),
+              ("Alex Brown", "Materials science", "Graduating fall 2026"), ("Connor Reschke", "Civil engineering", "Graduating fall 2026"),
+              ("Lauren Hoyt", "Wings Club Scholarship recipient", ""), ("Trinity Middleton", "Materials science and engineering", "Graduating May 2029"),
+              ("Ashley McCoy", "Architectural studies", "Graduating May 2028"), ("David Montes-Vilanova", "Computer science", "Graduating May 2028"),
+              ("Brian Romero Gomez", "Mechanical engineering", "Graduating May 2027")]
+page("get-involved/spotlights", "Student Spotlights", "get-involved", "Voiland College students on what has helped them succeed.", ("Nominate a student", "#nominate"), None,
+     person_grid([(n, m, (g + ". " if g else "") + "[TBD: link to story]", "spotlight-placeholder.svg") for n, m, g in SPOTLIGHTS])
+     + '<section id="nominate"><h2>Nominate a student</h2>' + p("Know a student whose story would help others? Send their name, major and a sentence about why to " + mail("vcea.info@wsu.edu") + ". [TBD: nomination form]") + "</section>")
+
+page("careers/blog", "Careers Blog", "careers", "Short, practical career advice from Career Services.", None, None,
+     sec("Recent posts", ul(["5 Things Every New Grad Should Do This Summer", "Create Demand for Your Expertise", "How to Write the Perfect Follow-up Email After an Interview",
+                             "Looking for an Internship? Here's How to Ask for Help That Actually Works"]) + p("[TBD: link each post; replace with the live category feed]"))
+     + sec("Want help with what you read?", p(L("@@/careers/coaching/", "Book a career coach") + " or drop in at SEH 102.")))
+
+PAGES["faculty-staff"]["body"] = (
+    sec("Refer a student (EARS)", p("Use the Early Academic Referral System when a student is missing class, falling behind, or seems to be struggling outside class. A referral reaches the student's advisor and support staff, who reach out to the student. [TBD: link and what the student hears]"))
+    + sec("Teach a first-year section", p("ENGR 101 and 102 sections are led by peer coordinators. Recommend strong upper-division students for the role. " + L("@@/first-year-transfer/first-year-program/", "First-Year Program") + "."))
+    + PAGES["faculty-staff"]["body"].split("<section><h2>Refer a student (EARS)</h2>", 1)[1].split("</section>", 1)[1])
+
+# Short intros and most-asked links on the landing pages
+PAGES["paying-for-school"]["body"] = p("Most Voiland College scholarships come from one application, due January 31. For a sudden expense, ask for emergency aid.") + PAGES["paying-for-school"]["body"]
+PAGES["get-involved"]["body"] = p("Clubs, maker spaces and events are where most students find their people and their first real projects. Every club is open to any enrolled WSU student.") + PAGES["get-involved"]["body"]
+PAGES["about"]["body"] = (p("The Student Success team runs advising support, tutoring, career services, clubs, the FIZ and the Wellness Center for Voiland College students.") + PAGES["about"]["body"]
+                          + sec("Fastest ways to reach us", ul([mail("vcea.info@wsu.edu"), tel("509-335-5050"), L("@@/what-to-do/", "What to do if you are stuck")])))
+PAGES["careers/toolkit"]["body"] = p("Start with your résumé, practice for interviews, then use the search tools. Any time you want feedback, book a coach or drop in at SEH 102.") + PAGES["careers/toolkit"]["body"]
+OWNERS.update({"first-year-transfer": "First-Year Programs", "first-year-transfer/transfer-students": "Advising", "paying-for-school": "Student Success",
+               "get-involved/events": "Student Success", "get-involved/spotlights": "Student Success", "give": "Student Success", "faculty-staff": "Student Success"})
+
 REDIRECTS = [("/advising/", "academic-help/advising"), ("/tutoring/", "academic-help/tutoring"), ("/tutoring/tutoring-schedule/", "academic-help/tutoring"),
  ("/tutoring/meet-your-tutors/", "academic-help/tutoring"), ("/mentorship-programs/", "academic-help/mentoring"), ("/internships-careers/", "careers"),
  ("/internships-careers/propel/", "careers/internships-propel"), ("/?page_id=254", "careers/internships-propel"),
