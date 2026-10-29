@@ -197,3 +197,10 @@ table th{background:var(--light)}
 main{padding-bottom:24px}
 html{color-scheme:light}
 main>section.hero-slim{background:linear-gradient(rgba(38,38,38,.55),rgba(38,38,38,.78)),url(../img/hero-naming-bridge.jpg) center 28%/cover;box-shadow:none;clip-path:none}
+/* fixes: desktop menu showed the phone-only utility list; equal-height tiles and card buttons */
+nav[aria-label=Primary]>ul.util-mobile{display:none}
+.tasks{grid-auto-rows:1fr}.tasks>li{display:flex}.task{flex:1;min-height:92px}
+.cards{grid-auto-rows:1fr}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:48px;box-sizing:border-box;line-height:1.2;text-align:center}
+.hero-slim h1{font-size:clamp(1.9rem,4.2vw,3.1rem)}
+@media (max-width:820px){nav[aria-label=Primary]>ul.util-mobile{display:block}}
