@@ -852,7 +852,8 @@ page("cost-and-value", "Why Voiland College Costs Less", summary=(
           + src(CN_W, CN_U, CN_O, note=f"Published total cost for beginning students living on campus, 2024-25. Four-year savings = 4 x the {usd(GAP_IN)} yearly in-state difference. Admission rates, fall 2024")
      + sec("Side by side: cost per year", table(["2024-25, living on campus", "WSU Pullman", rv("Seattle flagship"), og("Oregon land-grant")], [
                 ["Washington resident", win(usd(CN["wsu"]["total_in"])), cmp_cell(CN["sea"]["total_in"], CN["wsu"]["total_in"], rv),
-                 cmp_cell(CN["ore"]["total_out"], CN["wsu"]["total_in"], og) + f'<br><small>With WUE: {og("at least " + usd(CN["ore"]["total_in"]))}</small>'],
+                 cmp_cell(CN["ore"]["total_out"], CN["wsu"]["total_in"], og) + f'<br><small>With WUE: {og("at least " + usd(CN["ore"]["total_in"]))}</small>'
+                 + f'<br><small class="saves">WSU saves at least {usd(CN["ore"]["total_in"] - CN["wsu"]["total_in"])}</small>'],
                 ["Out-of-state student, full price", win(usd(CN["wsu"]["total_out"])), cmp_cell(CN["sea"]["total_out"], CN["wsu"]["total_out"], rv), cmp_cell(CN["ore"]["total_out"], CN["wsu"]["total_out"], og)],
                 ["Out-of-state tuition and fees", win(usd(CN["wsu"]["tuition_out"])), cmp_cell(CN["sea"]["tuition_out"], CN["wsu"]["tuition_out"], rv), cmp_cell(CN["ore"]["tuition_out"], CN["wsu"]["tuition_out"], og)],
                 ["Food and housing", win(usd(CN["wsu"]["housing"])), cmp_cell(CN["sea"]["housing"], CN["wsu"]["housing"], rv), cmp_cell(CN["ore"]["housing"], CN["wsu"]["housing"], og)],
