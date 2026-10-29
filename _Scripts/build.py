@@ -54,7 +54,7 @@ BYLINE = "Provided by the VCEA Student Success Team"
 NAV = [("Academic Help", "academic-help"), ("First-Year & Transfer", "first-year-transfer"),
        ("Careers & Internships", "careers"), ("Paying for School", "paying-for-school"),
        ("Get Involved", "get-involved"), ("Wellness", "wellness"), ("About & Contact", "about")]
-UTIL = [("Employers", "employers"), ("Faculty & Staff", "faculty-staff"), ("Club Advisors", "club-advisors"), ("Give", "give")]
+UTIL = [("Visit Us", "visit"), ("Employers", "employers"), ("Faculty & Staff", "faculty-staff"), ("Club Advisors", "club-advisors"), ("Give", "give")]
 FOOTER_QUICK = [("Find a Tutor", "academic-help/tutoring"), ("Book a Career Coach", "careers/coaching"),
                 ("Join a Club", "get-involved/clubs"), ("Scholarships", "paying-for-school/scholarships"), ("Wellness Center", "wellness")]
 
@@ -284,6 +284,7 @@ page("about/locations", "Locations & Hours", "about", "The single source of trut
          ["Main office", "[TBD]", "[TBD]", "vcea.info@wsu.edu", "509-335-5050"],
          ["Tutoring (Bowers Tutoring Center)", "SEH 130", "Mon–Fri, by course schedule", "vcea.info@wsu.edu", "509-335-5050"],
          ["Career Services", "SEH Welcome Center, Room 102", "Drop-ins listed on Careers page", "vcea.internships@wsu.edu", "509-335-8726"],
+         ["Campus visits (Recruiting)", "[TBD]", "Noon Mon to Sat, 2:30 pm Fri", "VCEA.Recruiting@wsu.edu", "[TBD]"],
          ["Club Hub", "SEH 202", "[TBD]", "vcea.studentclubs@wsu.edu", "509-335-6643"],
          ["FIZ / Maker Spaces", "Dana Hall", "[TBD]", "mpepper@wsu.edu", "509-335-8550"],
          ["Wellness Center", "Daggy Hall 101", "M to F, 9 to 4", "alena.hume@wsu.edu", "509-335-5376"]])
@@ -459,6 +460,17 @@ PAGES["first-year-transfer/transfer-students"]["contact"] = contact("Alena Hume"
 PAGES["careers"]["contact"] = contact("Lisa Hathaway", "Director, Internships and Career Services", "vcea.internships@wsu.edu", "509-335-8726", "SEH 126D; front desk SEH 102")
 
 
+
+VISIT_MAIL = "VCEA.Recruiting@wsu.edu"
+page("visit", "Visit Voiland College", summary="Prospective students: come see the college. Sign up for a visit by email.",
+     button=("Email to sign up", "mailto:" + VISIT_MAIL), 
+     where="Noon visit: Monday through Saturday. 2:30 pm visit: Fridays only. Pacific time. Meeting spot: [TBD: building and room].",
+     body=sec("Pick a time", table(["Visit", "Days"], [["12:00 pm (noon)", "Monday through Saturday"], ["2:30 pm", "Fridays only"]]))
+     + sec("How to sign up", ol(["Email " + mail(VISIT_MAIL) + " with the day and time you want.", "Include your name, how many people are coming, and your intended major. [TBD: confirm what the team needs]", "The team replies to confirm your visit. [TBD: how far ahead to ask]"]))
+     + sec("What to expect", p("[TBD: what the visit includes, how long it lasts, parking and where to check in]"))
+     + p("<small>[VERIFY: the request spelled the address “VCEA.Recuriting@wsu.edu”; this page uses VCEA.Recruiting@wsu.edu. Confirm which is correct.]</small>"),
+     contact_card=contact("Student Success Recruiting", "Future Cougs", VISIT_MAIL, "[TBD]", "SEH 102A [VERIFY: Lisa Carmack, Student Success Coordinator, Future Cougs, is listed there]"))
+
 REDIRECTS = [("/advising/", "academic-help/advising"), ("/tutoring/", "academic-help/tutoring"), ("/tutoring/tutoring-schedule/", "academic-help/tutoring"),
  ("/tutoring/meet-your-tutors/", "academic-help/tutoring"), ("/mentorship-programs/", "academic-help/mentoring"), ("/internships-careers/", "careers"),
  ("/internships-careers/propel/", "careers/internships-propel"), ("/?page_id=254", "careers/internships-propel"),
@@ -514,7 +526,7 @@ def layout(slug, title, main, crumbs=""):
    <div><h3>Get help</h3><ul><li><a href="{url('academic-help/tutoring', base)}">Tutoring</a></li><li><a href="{url('academic-help/advising', base)}">Advising</a></li><li><a href="{url('academic-help/mentoring', base)}">Mentoring</a></li><li><a href="{url('wellness', base)}">Wellness Center</a></li></ul></div>
    <div><h3>Careers</h3><ul><li><a href="{url('careers/coaching', base)}">Career coaching</a></li><li><a href="{url('careers/internships-propel', base)}">Internships &amp; ProPEL</a></li><li><a href="{url('careers/career-fairs', base)}">Career fairs</a></li><li><a href="{url('careers/toolkit', base)}">Career toolkit</a></li></ul></div>
    <div><h3>Get involved</h3><ul><li><a href="{url('get-involved/clubs', base)}">Clubs</a></li><li><a href="{url('get-involved/maker-spaces', base)}">Maker spaces</a></li><li><a href="{url('get-involved/events', base)}">Events</a></li><li><a href="{url('paying-for-school/scholarships', base)}">Scholarships</a></li></ul></div>
-   <div><h3>For</h3><ul><li><a href="{url('employers', base)}">Employers</a></li><li><a href="{url('faculty-staff', base)}">Faculty &amp; Staff</a></li><li><a href="{url('club-advisors', base)}">Club Advisors</a></li><li><a href="{url('give', base)}">Give</a></li></ul></div>
+   <div><h3>For</h3><ul><li><a href="{url('visit', base)}">Visit us</a></li><li><a href="{url('employers', base)}">Employers</a></li><li><a href="{url('faculty-staff', base)}">Faculty &amp; Staff</a></li><li><a href="{url('club-advisors', base)}">Club Advisors</a></li><li><a href="{url('give', base)}">Give</a></li></ul></div>
   </div>
   <p class="social"><a href="https://www.facebook.com/WSUVoilandSS">Facebook</a> <a href="https://x.com/WSUVoilandPPEL">X</a> <a href="https://www.linkedin.com/groups/14355576/">LinkedIn</a> Instagram [TBD]</p>
   <p class="small">Student Success Team, Voiland College of Engineering and Architecture<br>PO Box 642250, Pullman, WA 99164-2250, 509-335-5050, <a href="mailto:vcea.info@wsu.edu">vcea.info@wsu.edu</a></p></div>
