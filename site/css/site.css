@@ -262,3 +262,8 @@ th .rival{background:#4B2E83;color:#fff}
 .stat span{font-size:.92rem}.stat .rival{font-size:.85rem}
 .src{font-size:.8rem;color:var(--gray);margin-top:6px}.src a{color:var(--gray)}
 @media (max-width:700px){.stat-row{grid-template-columns:1fr}}
+/* comparison school recedes: plain purple text, no fill; WSU wins carry the weight */
+.rival{background:none;color:#4B2E83;font-weight:400;padding:0;border-radius:0;opacity:.85}
+th .rival{background:none;color:#4B2E83;font-weight:600;opacity:1}
+.stat .rival{font-size:inherit}
+.win{color:var(--crimson);font-weight:800;font-size:1.05em}

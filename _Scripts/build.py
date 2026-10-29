@@ -811,7 +811,8 @@ VCEA_SCHOLARSHIPS_URL = "https://vcea.wsu.edu/student-success/scholarships/"
 VCEA_CLUBHUB_URL = "https://vcea.wsu.edu/student-success/club-hub/"
 WUE_URL = "https://www.wiche.edu/tuition-savings/wue/"
 SC_DICT_URL = "https://collegescorecard.ed.gov/data/"
-def rv(x): return f'<span class="rival">{x}</span>'          # the Seattle comparison school, shown in purple
+def rv(x): return f'<span class="rival">{x}</span>'          # the Seattle comparison school: quiet purple text
+def win(x): return f'<strong class="win">{x}</strong>'       # WSU's advantage: the eye goes here
 def src(*links, note=""): return '<p class="src">Source: ' + ", ".join(f'<a href="{u}">{t}</a>' for t, u in links) + (f". {note}" if note else "") + "</p>"
 SC_W = ("College Scorecard: WSU", SCORECARD_URL); SC_U = ("College Scorecard: Seattle comparison school", UW_SCORECARD_URL)
 SAME_MAJORS = [m for m in CMP_MAJORS if m[0] in ("Mechanical Engineering", "Civil Engineering", "Electrical Engineering")]
@@ -829,13 +830,13 @@ page("cost-and-value", "Why Voiland College Costs Less", summary=(
           f'<div class="stat"><b>{round(SC["admit"] * 100)}%</b><span>of applicants admitted, vs. {rv(str(round(UW["admit"] * 100)) + "%")} in Seattle</span></div></div>'
           + src(SC_W, SC_U, note=f"Four-year savings = 4 x the {usd(COA_GAP)} yearly difference in average cost of attendance (2024-25). Out-of-state tuition and fees, 2025-26. Admission rates, fall 2024")
      + sec("Lower cost of attendance", table(["Per year", "WSU Pullman", rv("Seattle flagship"), "You save at WSU"], [
-                ["Average cost of attendance (2024-25)", usd(SC["coa"]), rv(usd(UW["coa"])), usd(COA_GAP)],
-                ["Out-of-state tuition and fees (2025-26)", usd(SC["tuition_out"]), rv(usd(UW["tuition_out"])), usd(OUT_GAP)]])
+                ["Average cost of attendance (2024-25)", usd(SC["coa"]), rv(usd(UW["coa"])), win(usd(COA_GAP))],
+                ["Out-of-state tuition and fees (2025-26)", usd(SC["tuition_out"]), rv(usd(UW["tuition_out"])), win(usd(OUT_GAP))]])
            + p("Cost of attendance is the full yearly budget: tuition and fees, books and supplies, and living expenses, averaged for full-time first-year students who receive federal aid.")
            + p(f"Aid keeps pace: the average net price after grants and scholarships for in-state students receiving federal aid is {usd(SC['net_avg'])} at WSU and {rv(usd(UW['net_avg']))} in Seattle (2024-25). Your family's number depends on income, so run WSU's net price calculator. [TBD: link]")
            + src(SC_W, SC_U))
      + sec("Same starting salaries", table(["Major", "WSU graduates, first year", rv("Seattle graduates, first year")],
-                [[m, usd(we), rv(usd(ue))] for m, we, ue, _, _ in SAME_MAJORS])
+                [[m, win(usd(we)), rv(usd(ue))] for m, we, ue, _, _ in SAME_MAJORS])
            + p(f"In mechanical, civil and electrical engineering, WSU graduates' median first-year earnings are within 2 percent of the Seattle flagship's "
                f"(gaps of {', '.join(f'{(ue - we) / ue * 100:.1f}' for _, we, ue, _, _ in SAME_MAJORS)} percent), after paying less to get there.")
            + src(SC_W, SC_U, note="Median earnings one year after graduating, for 2020-21 and 2021-22 graduates who received federal aid and were working, in 2024 dollars"))
@@ -1273,6 +1274,11 @@ th .rival{background:#4B2E83;color:#fff}
 .stat span{font-size:.92rem}.stat .rival{font-size:.85rem}
 .src{font-size:.8rem;color:var(--gray);margin-top:6px}.src a{color:var(--gray)}
 @media (max-width:700px){.stat-row{grid-template-columns:1fr}}
+/* comparison school recedes: plain purple text, no fill; WSU wins carry the weight */
+.rival{background:none;color:#4B2E83;font-weight:400;padding:0;border-radius:0;opacity:.85}
+th .rival{background:none;color:#4B2E83;font-weight:600;opacity:1}
+.stat .rival{font-size:inherit}
+.win{color:var(--crimson);font-weight:800;font-size:1.05em}
 """
 
 JS = """(function(){
