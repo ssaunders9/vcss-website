@@ -572,10 +572,10 @@ def render_home():
 <p class="lede">Free support to help you succeed in class, on your career path, and beyond.</p></div></section>
 <h2 class="sr">I want to…</h2><ul class="tasks">{t}</ul>
 <ul class="today" aria-label="Today at a glance">
- <li><strong>Tutoring</strong> SEH 130, Mon–Fri, <a href="https://tutoring.wsu.edu/">see today's tutors</a></li>
- <li><strong>Career drop-in today</strong> <span id="career-today">SEH 102, see <a href="@@/careers/">hours</a></span></li>
- <li><strong>Campus visits</strong> <span id="visit-today">Noon Mon to Sat, 2:30 pm Fri</span>, <a href="@@/visit/">sign up</a></li>
- <li><strong>Wellness Center</strong> Daggy Hall, Mon–Fri 9–4, <a href="tel:988">Crisis? Call/text 988</a></li>
+ <li><strong>Tutoring</strong><span>SEH 130, Mon to Fri</span><a href="https://tutoring.wsu.edu/">See today's tutors</a></li>
+ <li><strong>Career drop-in today</strong><span id="career-today">SEH 102</span><a href="@@/careers/">See all hours</a></li>
+ <li><strong>Campus visits</strong><span id="visit-today">Noon Mon to Sat, 2:30 pm Fri</span><a href="@@/visit/">Sign up for a visit</a></li>
+ <li><strong>Wellness Center</strong><span>Daggy Hall, Mon to Fri, 9 to 4</span><a href="tel:988">Crisis? Call or text 988</a></li>
 </ul>
 <div class="strip">
  <section data-autohide="empty"><h2>Upcoming events</h2><p>[TBD: auto feed, 3–4 items; hide section when empty]</p><a class="arrow-link" href="@@/get-involved/events/">More events</a></section>
@@ -584,7 +584,7 @@ def render_home():
 </div>
 <script>(function(){{var d={{1:"Mon 2–3 pm",2:"Tue 12–1 pm",3:"Wed 3–4 pm",4:"Thu 12–1 pm",5:"Fri 2–3 pm"}}[new Date().getDay()];
 var v=document.getElementById("visit-today"),g=new Date().getDay();if(v)v.textContent=g===0?"No visits today":g===5?"Today: noon and 2:30 pm":"Today: noon";
-var e=document.getElementById("career-today");if(e)e.innerHTML=d?"SEH 102, "+d:"None today, <a href=\\"@@/careers/\\">weekday hours</a>";}})();</script>"""
+var e=document.getElementById("career-today");if(e)e.textContent=d?"SEH 102, "+d:"No drop-in today";}})();</script>"""
     return layout("", "Home", main)
 
 SVG = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {w} {h}" role="img"><rect width="100%" height="100%" fill="{bg}"/><text x="50%" y="50%" fill="{fg}" font-family="sans-serif" font-size="{fs}" text-anchor="middle" dominant-baseline="middle">{t}</text></svg>'
@@ -805,6 +805,7 @@ nav[aria-label=Primary]>ul.util-mobile{display:none}
 .today li{font-size:.85rem;line-height:1.45}
 @media (max-width:1040px){.today{grid-template-columns:repeat(2,1fr)}}
 @media (max-width:560px){.today{grid-template-columns:1fr}}
+.today li{gap:3px}.today span{display:block}.today a{font-weight:600;font-size:.85rem}
 """
 
 JS = """(function(){

@@ -209,3 +209,4 @@ nav[aria-label=Primary]>ul.util-mobile{display:none}
 .today li{font-size:.85rem;line-height:1.45}
 @media (max-width:1040px){.today{grid-template-columns:repeat(2,1fr)}}
 @media (max-width:560px){.today{grid-template-columns:1fr}}
+.today li{gap:3px}.today span{display:block}.today a{font-weight:600;font-size:.85rem}
