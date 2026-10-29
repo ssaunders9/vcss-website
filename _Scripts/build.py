@@ -816,25 +816,34 @@ def win(x): return f'<strong class="win">{x}</strong>'       # WSU's advantage: 
 def src(*links, note=""): return '<p class="src">Source: ' + ", ".join(f'<a href="{u}">{t}</a>' for t, u in links) + (f". {note}" if note else "") + "</p>"
 SC_W = ("College Scorecard: WSU", SCORECARD_URL); SC_U = ("College Scorecard: Seattle comparison school", UW_SCORECARD_URL)
 SAME_MAJORS = [m for m in CMP_MAJORS if m[0] in ("Mechanical Engineering", "Civil Engineering", "Electrical Engineering")]
+# College Navigator (NCES, IPEDS) estimated expenses for full-time beginning students, 2024-25, as displayed on each school's page
+CN_W_URL = "https://nces.ed.gov/collegenavigator/?id=236939"; CN_U_URL = "https://nces.ed.gov/collegenavigator/?id=236948"
+CN_W = ("College Navigator: WSU", CN_W_URL); CN_U = ("College Navigator: Seattle comparison school", CN_U_URL)
+WSU_NPC_URL = "https://financialaid.wsu.edu/price-calculator/"
+CN = {"wsu": dict(total_in=31219, total_out=47778, housing=13622, tuition_in=13391, tuition_out=29950, admit=87),
+      "sea": dict(total_in=35305, total_out=65541, housing=18405, tuition_in=12973, tuition_out=43209, admit=39)}
+GAP_IN = CN["sea"]["total_in"] - CN["wsu"]["total_in"]; GAP_OUT = CN["sea"]["total_out"] - CN["wsu"]["total_out"]
+GAP_HOUSING = CN["sea"]["housing"] - CN["wsu"]["housing"]; GAP_TUIT_OUT = CN["sea"]["tuition_out"] - CN["wsu"]["tuition_out"]
 FED_CAT = {"Electrical Engineering": "Electrical, Electronics, and Communications Engineering", "Construction Management": "Construction Engineering Technology [VERIFY: WSU reports Construction Management under this category]",
            "Materials Science and Engineering": "Materials Engineering", "Bioengineering": "Biomedical/Medical Engineering"}
-COA_GAP = UW["coa"] - SC["coa"]; OUT_GAP = UW["tuition_out"] - SC["tuition_out"]
+
 PAYS = [223, 219, 233, 203, 250, 267, 222]   # WSU median monthly federal loan payment: ME, CE, EE, CS, CompE, ChE, Construction (Scorecard)
 
 page("cost-and-value", "Why Voiland College Costs Less", summary=(
-     f"Save {usd(COA_GAP * 4)} over four years compared with the Seattle flagship, and start at the same salaries in mechanical, civil and electrical engineering."),
+     f"Save {usd(GAP_IN * 4)} over four years compared with the Seattle flagship, and start at the same salaries in mechanical, civil and electrical engineering."),
      button=("Plan a visit", "@@/visit/"),
      body='<div class="stat-row">'
-          f'<div class="stat"><b>{usd(COA_GAP * 4)}</b><span>less to attend over four years</span></div>'
-          f'<div class="stat"><b>{usd(OUT_GAP)}</b><span>less out-of-state tuition, every year</span></div>'
-          f'<div class="stat"><b>{round(SC["admit"] * 100)}%</b><span>of applicants admitted, vs. {rv(str(round(UW["admit"] * 100)) + "%")} in Seattle</span></div></div>'
-          + src(SC_W, SC_U, note=f"Four-year savings = 4 x the {usd(COA_GAP)} yearly difference in average cost of attendance (2024-25). Out-of-state tuition and fees, 2025-26. Admission rates, fall 2024")
-     + sec("Lower cost of attendance", table(["Per year", "WSU Pullman", rv("Seattle flagship"), "You save at WSU"], [
-                ["Average cost of attendance (2024-25)", usd(SC["coa"]), rv(usd(UW["coa"])), win(usd(COA_GAP))],
-                ["Out-of-state tuition and fees (2025-26)", usd(SC["tuition_out"]), rv(usd(UW["tuition_out"])), win(usd(OUT_GAP))]])
-           + p("Cost of attendance is the full yearly budget: tuition and fees, books and supplies, and living expenses, averaged for full-time first-year students who receive federal aid.")
-           + p(f"Aid keeps pace: the average net price after grants and scholarships for in-state students receiving federal aid is {usd(SC['net_avg'])} at WSU and {rv(usd(UW['net_avg']))} in Seattle (2024-25). Your family's number depends on income, so run WSU's net price calculator. [TBD: link]")
-           + src(SC_W, SC_U))
+          f'<div class="stat"><b>{usd(GAP_IN * 4)}</b><span>less to attend over four years, Washington residents</span></div>'
+          f'<div class="stat"><b>{usd(GAP_OUT)}</b><span>less every year for out-of-state students</span></div>'
+          f'<div class="stat"><b>{CN["wsu"]["admit"]}%</b><span>of applicants admitted, vs. {rv(str(CN["sea"]["admit"]) + "%")} in Seattle</span></div></div>'
+          + src(CN_W, CN_U, note=f"Published total cost for beginning students living on campus, 2024-25. Four-year savings = 4 x the {usd(GAP_IN)} yearly in-state difference. Admission rates, fall 2024")
+     + sec("Lower cost of attendance", table(["2024-25, living on campus", "WSU Pullman", rv("Seattle flagship"), "You save at WSU"], [
+                ["Total cost, Washington resident", usd(CN["wsu"]["total_in"]), rv(usd(CN["sea"]["total_in"])), win(usd(GAP_IN))],
+                ["Total cost, out-of-state", usd(CN["wsu"]["total_out"]), rv(usd(CN["sea"]["total_out"])), win(usd(GAP_OUT))],
+                ["Food and housing", usd(CN["wsu"]["housing"]), rv(usd(CN["sea"]["housing"])), win(usd(GAP_HOUSING))]])
+           + p(f"Tuition for Washington residents is nearly the same at both schools. The savings come from living in Pullman: food and housing alone cost {usd(GAP_HOUSING)} less a year.")
+           + p(f'Total cost includes tuition and fees, books and supplies, food and housing, and other expenses. What your family pays after aid depends on income, so try <a href="{WSU_NPC_URL}">WSU\'s net price calculator</a>.')
+           + src(CN_W, CN_U, note="Estimated expenses for full-time beginning undergraduates, 2024-25"))
      + sec("Same starting salaries", table(["Major", "WSU graduates, first year", rv("Seattle graduates, first year")],
                 [[m, win(usd(we)), rv(usd(ue))] for m, we, ue, _, _ in SAME_MAJORS])
            + p(f"In mechanical, civil and electrical engineering, WSU graduates' median first-year earnings are within 2 percent of the Seattle flagship's "
@@ -845,17 +854,17 @@ page("cost-and-value", "Why Voiland College Costs Less", summary=(
            + p("Pell Grant recipients earn the same as everyone else: in mechanical engineering, $78,564 for Pell recipients compared with $78,276 overall.")
            + p(f"Median monthly federal loan payments for WSU graduates in these majors run from {usd(min(PAYS))} to {usd(max(PAYS))}, on a standard 10-year plan.")
            + src(SC_W, note="Earnings: 2020-21 and 2021-22 graduates, one year after graduating, in 2024 dollars. Loan payments: 2022-23 and 2023-24 graduates"))
-     + sec("Out-of-state? It gets better", p(f"WSU's out-of-state tuition and fees are already {usd(OUT_GAP)} a year below the Seattle flagship's (2025-26). "
+     + sec("Out-of-state? It gets better", p(f"WSU's out-of-state tuition and fees are already {usd(GAP_TUIT_OUT)} a year below the Seattle flagship's (2024-25). "
                                               "Students from Western Undergraduate Exchange states can add the WUE Distinguished Cougar Award and Voiland College's $2,000-a-year WUEE Scholarship, which together close the gap between in-state and out-of-state tuition. [VERIFY: amounts for 2027-28]")
-           + src(SC_W, SC_U, ("Voiland College scholarships", VCEA_SCHOLARSHIPS_URL), ("WICHE: Western Undergraduate Exchange", WUE_URL)))
+           + src(CN_W, CN_U, ("Voiland College scholarships", VCEA_SCHOLARSHIPS_URL), ("WICHE: Western Undergraduate Exchange", WUE_URL)))
      + sec("Scholarships from one application", ul(["<strong>Distinguished Dean's Scholarship:</strong> full tuition, renewable for up to four years",
                                                     "<strong>Dean's Scholarship:</strong> more than 300 awarded every year to new first-year and transfer students",
                                                     "<strong>WUEE Scholarship:</strong> $2,000 a year for out-of-state engineering and computer science students"])
            + p("One form, the WSU General Scholarship Application, covers all three. Priority deadline: January 31.")
            + src(("Voiland College scholarships", VCEA_SCHOLARSHIPS_URL)))
-     + sec("More students get their shot", p(f"WSU admitted {round(SC['admit'] * 100)} percent of applicants for fall 2024, compared with {rv(str(round(UW['admit'] * 100)) + ' percent')} at the Seattle flagship. "
+     + sec("More students get their shot", p(f"WSU admits {CN['wsu']['admit']} percent of applicants, compared with {rv(str(CN['sea']['admit']) + ' percent')} at the Seattle flagship. "
                                              "At Voiland College, first-year students start in the college right away, with ENGR 101 and 102 and free tutoring from day one.")
-           + src(SC_W, SC_U, ("First-Year Program", "@@/first-year-transfer/first-year-program/")))
+           + src(CN_W, CN_U, ("First-Year Program", "@@/first-year-transfer/first-year-program/")))
      + sec("Earn while you learn", ul(["<strong>ProPEL:</strong> earn credit for paid internships and co-ops while staying a full-time student. " + L("@@/careers/internships-propel/", "ProPEL"),
                                        "<strong>Micro-internships:</strong> paid short projects through Parker Dewey, often remote.",
                                        "<strong>Campus roles:</strong> peer tutor, first-year peer coordinator, Peer Career Guide, Wellness peer supporter. [VERIFY: which roles are paid]"]))
@@ -863,12 +872,15 @@ page("cost-and-value", "Why Voiland College Costs Less", summary=(
            + src(("Voiland College Club Hub", VCEA_CLUBHUB_URL)))
      + sec("Comparing offers? Ask every school", check(["What is our net price after grants, not the sticker price?", "What will housing and living costs be each year?",
                                                         "When and how do I get into my major?", "Do scholarships renew every year?", "Can I earn credit for a paid internship?"]))
-     + sec("Sources", ul([f'<a href="{SCORECARD_URL}">U.S. Department of Education College Scorecard: Washington State University</a>',
+     + sec("Sources", ul([f'<a href="{CN_W_URL}">NCES College Navigator: Washington State University</a> (costs, tuition, admission rate)',
+                          f'<a href="{CN_U_URL}">NCES College Navigator: Seattle comparison school</a>',
+                          f'<a href="{WSU_NPC_URL}">WSU net price calculator</a>',
+                          f'<a href="{SCORECARD_URL}">U.S. Department of Education College Scorecard: Washington State University</a> (earnings and loan payments by major)',
                           f'<a href="{UW_SCORECARD_URL}">U.S. Department of Education College Scorecard: Seattle comparison school</a>',
                           f'<a href="{SC_DICT_URL}">College Scorecard data and definitions</a> (data release of October 15, 2026)',
                           f'<a href="{VCEA_SCHOLARSHIPS_URL}">Voiland College Student Success: Scholarships</a>', f'<a href="{VCEA_CLUBHUB_URL}">Voiland College Student Success: Club Hub</a>',
                           f'<a href="{WUE_URL}">WICHE: Western Undergraduate Exchange</a>'])
-           + p("<small>All College Scorecard figures retrieved October 29, 2026 and checked against the data dictionary. Dollar differences are computed from the published figures. Update every fall.</small>")),
+           + p("<small>College Navigator and College Scorecard figures retrieved October 29, 2026; Scorecard figures checked against its data dictionary. Dollar differences are computed from the published figures. Update every fall.</small>")),
      contact_card=contact("Recruiting", "Future Cougs", VISIT_MAIL, "[TBD]"))
 
 KEYWORDS["cost-and-value"] = "uw udub husky huskies seattle university washington compare comparison cost costs tuition price afford affordable net price sticker out-of-state wue salary salaries earnings debt loans value worth roi compare"
