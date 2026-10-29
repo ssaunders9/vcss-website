@@ -1,0 +1,260 @@
+[
+ {
+  "name": "3D Printing Club",
+  "email": "3DPrinting.vcea@wsu.edu",
+  "pres": "Kaitlyn Dunphy",
+  "adv": "Arda Gozen"
+ },
+ {
+  "name": "Amateur Radio Club (Rho Epsilon or Ham Radio)",
+  "email": "hamradio.vcea@wsu.edu",
+  "pres": "Andrew Hazelbaker",
+  "adv": "Mae Siev"
+ },
+ {
+  "name": "American Institute of Architecture Students (AIAS)",
+  "email": "aias.vcea@wsu.edu",
+  "pres": "Matt Jordan",
+  "adv": "Hala Barakat"
+ },
+ {
+  "name": "American Institute of Chemical Engineers (AIChE)",
+  "email": "aiche.vcea@wsu.edu",
+  "pres": "Anita Valdez",
+  "adv": "Colin Lehman-Chong"
+ },
+ {
+  "name": "American Society of Civil Engineers (ASCE)",
+  "email": "asce.vcea@wsu.edu",
+  "pres": "Matt Metcalf",
+  "adv": "Karl Olsen"
+ },
+ {
+  "name": "American Society of Landscape Architecture at WSU (ASLA)",
+  "email": "asla.vcea@wsu.edu",
+  "pres": "Victoria Weingarz",
+  "adv": "Steve Austin"
+ },
+ {
+  "name": "American Society of Mechanical Engineers (ASME)",
+  "email": "asme.vcea@wsu.edu",
+  "pres": "Summer King",
+  "adv": "Roland Chen"
+ },
+ {
+  "name": "American Society of Mechanical Engineers (ASME) \u2013 Bremerton Campus",
+  "email": "",
+  "pres": "TBD",
+  "adv": "TBD"
+ },
+ {
+  "name": "Associated Students of Construction Management (ASCM)",
+  "email": "ascm.vcea@wsu.edu",
+  "pres": "Avery Percell",
+  "adv": "Darhl Edwards"
+ },
+ {
+  "name": "Association for Computing Machinery (ACM)",
+  "email": "acm.vcea@wsu.edu",
+  "pres": "Apurv Rane",
+  "adv": "Venera Arnaoudova"
+ },
+ {
+  "name": "Biomedical Engineering Society (BMES)",
+  "email": "bmes.vcea@wsu.edu",
+  "pres": "Ananya Saravana",
+  "adv": "Dmitri Tolkatchev"
+ },
+ {
+  "name": "Concrete Canoe",
+  "email": "ConcreteCanoe.vcea@wsu.edu",
+  "pres": "Brandon Pineda",
+  "adv": "Karl Olsen"
+ },
+ {
+  "name": "Cougar Car Club (CCC)",
+  "email": "vcea.CougarCarClub@wsu.edu",
+  "pres": "Kyle Gasper",
+  "adv": "Mae Siev"
+ },
+ {
+  "name": "Cougs in Space \u2013 CougSat",
+  "email": "CougsInSpace.vcea@wsu.edu",
+  "pres": "Nick Lee",
+  "adv": "Venera Arnaoudova"
+ },
+ {
+  "name": "Crimson Robotics",
+  "email": "",
+  "pres": "Chaz Fieldson",
+  "adv": "Mae Siev"
+ },
+ {
+  "name": "Cyber Security Group (CSG)",
+  "email": "csg.vcea@wsu.edu",
+  "pres": "Emily West",
+  "adv": "Assefaw Gebremedhin"
+ },
+ {
+  "name": "Design-Build Institute of America (DBIA)",
+  "email": "dbia.vcea@wsu.edu",
+  "pres": "Livy Lecompte",
+  "adv": "Darhl Edwards"
+ },
+ {
+  "name": "Engineers In Action (EIA)",
+  "email": "vcea.eiawsu@wsu.edu",
+  "pres": "Keli Greene",
+  "adv": ""
+ },
+ {
+  "name": "EUNOIA at WSU",
+  "email": "sdc.eunoia@wsu.edu",
+  "pres": "",
+  "adv": "Vahid Vahdat"
+ },
+ {
+  "name": "Everett Engineering Club (Everett Campus)",
+  "email": "",
+  "pres": "TBP",
+  "adv": "Xiaopeng Bi"
+ },
+ {
+  "name": "Game Development Club at WSU (GDC)",
+  "email": "",
+  "pres": "Evan Bay",
+  "adv": "Andy O\u2019Fallon"
+ },
+ {
+  "name": "Girls Who Code (College Loops)",
+  "email": "CollegeLoops.vcea@wsu.edu",
+  "pres": "Guneet Kaur",
+  "adv": "Shira Broschat"
+ },
+ {
+  "name": "Graduate Students in Chemical Engineering and Bioengineering (GSCEB)",
+  "email": "",
+  "pres": "Raul Pelaez Garcia",
+  "adv": "Advisor TBD"
+ },
+ {
+  "name": "Institute of Electrical & Electronics Engineers (IEEE)",
+  "email": "ieee.vcea@wsu.edu",
+  "pres": "Anthony Johnson",
+  "adv": "Clint Cole"
+ },
+ {
+  "name": "Interior Design Student Association (IDSA)",
+  "email": "",
+  "pres": "Sophia Wilson",
+  "adv": "Carrie Vielle"
+ },
+ {
+  "name": "LeetCode Club at WSU",
+  "email": "",
+  "pres": "Darron Li",
+  "adv": "Venera Arnaoudova"
+ },
+ {
+  "name": "Linux Users\u2019 Group (LUG)",
+  "email": "lug.vcea@wsu.edu",
+  "pres": "Ethan Irish",
+  "adv": "Venera Arnaoudova"
+ },
+ {
+  "name": "Material Advantage (MA)",
+  "email": "vcea.MaterialAdvantage@wsu.edu",
+  "pres": "Alex Klemp",
+  "adv": "Scott Beckman"
+ },
+ {
+  "name": "Mechanical Contractors Association of America (MCAA)",
+  "email": "mcaa.vcea@wsu.edu",
+  "pres": "Olivia Lizarraga",
+  "adv": "Rick Cherf"
+ },
+ {
+  "name": "National Association of Minority Landscape Architects (NAMLA)",
+  "email": "",
+  "pres": "Jada Allen",
+  "adv": "Michael Sanchez"
+ },
+ {
+  "name": "National Society of Black Engineers (NSBE)",
+  "email": "nsbe.vcea@wsu.edu",
+  "pres": "Tatiana Trowers-Norris",
+  "adv": "Jessica Samuels"
+ },
+ {
+  "name": "Palouse Aerospace (AIAA)",
+  "email": "palouse.aerospace@wsu.edu",
+  "pres": "Cooper Cox",
+  "adv": "Jin Liu"
+ },
+ {
+  "name": "RoboSub of the Palouse",
+  "email": "robosub@wsu.edu",
+  "pres": "Cole Wilson",
+  "adv": "Mae Siev"
+ },
+ {
+  "name": "Robotics Club",
+  "email": "vcea.RoboticsClub@wsu.edu",
+  "pres": "Sam Palatinikov",
+  "adv": "John Swensen"
+ },
+ {
+  "name": "Society of Automotive Engineers (SAE) \u2013 WAZZU Racing",
+  "email": "wazzu.racing.vcea@wsu.edu",
+  "pres": "Malcolm Cilds",
+  "adv": "Gordon Peterson"
+ },
+ {
+  "name": "Society of Hispanic Professional Engineers (SHPE)",
+  "email": "",
+  "pres": "Jholyn Campos",
+  "adv": "Samuel Rodriguez Flecha"
+ },
+ {
+  "name": "Society of Women Engineers (SWE)",
+  "email": "swe@wsu.edu",
+  "pres": "Ariana Arvina",
+  "adv": "Nandita Biswas"
+ },
+ {
+  "name": "Society of Women Engineers, Graduate Students (SWE)",
+  "email": "",
+  "pres": "Christi Webster",
+  "adv": "Venera Arnaoudova"
+ },
+ {
+  "name": "Software Development Club (SDC)",
+  "email": "",
+  "pres": "Reid Pace",
+  "adv": "Venera Arnaoudova"
+ },
+ {
+  "name": "Steel Bridge at WSU",
+  "email": "",
+  "pres": "Tobin Bowles",
+  "adv": "Hyeyoung Koh"
+ },
+ {
+  "name": "Timber Strong WSU Pullman",
+  "email": "timberstrong.vcea@wsu.edu",
+  "pres": "Kaeden Hammond",
+  "adv": "Jesse Weaver"
+ },
+ {
+  "name": "Virtual Design and Construction Club (VDCC)",
+  "email": "",
+  "pres": "Erin Hazen",
+  "adv": ""
+ },
+ {
+  "name": "Women In Construction Management",
+  "email": "",
+  "pres": "Alison Mock",
+  "adv": ""
+ }
+]
