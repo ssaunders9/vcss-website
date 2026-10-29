@@ -791,41 +791,58 @@ SC_MAJORS = [("Computer Science", "Computer Science", 86200, 17853, 203), ("Comp
              ("Bioengineering", "Biomedical Engineering", 66883, None, None), ("Architecture", "Architectural Sciences and Technology", 49465, 22208, 252)]
 def usd(n): return f"${n:,}" if n is not None else "Not reported"
 
-page("cost-and-value", "What Voiland College Really Costs", summary=(
-     f"Most families pay far less than the sticker price. At WSU the average net price after grants and scholarships is {usd(SC['net_avg'])} a year, "
-     f"and Voiland College graduates in most majors earn $75,000 to $86,000 in their first year out."),
+UW_SCORECARD_URL = "https://collegescorecard.ed.gov/school/?236948-University-of-Washington-Seattle-Campus"
+UW = dict(coa=33524, tuition_in=13406, tuition_out=44640, net_avg=13663, median_debt=14008, admit=0.39,
+          net_by_income=[7610, 7112, 8585, 11427, 30441])
+SC["admit"] = 0.87
+# major: (WSU first-year earnings, UW first-year earnings, WSU median federal debt, UW median federal debt)
+CMP_MAJORS = [("Mechanical Engineering", 78276, 79240, 19579, 15585), ("Civil Engineering", 74997, 75992, 19250, 12000),
+              ("Electrical Engineering", 83445, 84874, 20537, 13978), ("Chemical Engineering", 80564, 87003, 23500, 14293),
+              ("Bioengineering", 66883, 70517, None, 19465), ("Materials Science and Engineering", 70115, 83654, None, 13545),
+              ("Computer Science", 86200, 128218, 17853, 12437), ("Computer Engineering", 84757, 147670, 22000, 13634)]
+def gap(w, u, lower_is_better=True):
+    if w is None or u is None: return ""
+    d = u - w
+    if abs(d) < 0.02 * max(w, u): return "About the same"
+    if lower_is_better: return f"WSU {usd(abs(d))} less" if d > 0 else f"UW {usd(abs(d))} less"
+    return f"UW {usd(abs(d))} more" if d > 0 else f"WSU {usd(abs(d))} more"
+
+page("cost-and-value", "WSU vs. UW: Cost and Value", summary=(
+     "A year at WSU costs about $5,600 less than a year at UW Seattle, about $22,000 over four years. "
+     "In mechanical, civil and electrical engineering, WSU graduates earn about the same as UW graduates in their first year."),
      button=("Visit and ask us", "@@/visit/"),
-     body=sec("Sticker price vs. what families pay", p(f"WSU's published cost of attendance for a Washington resident is {usd(SC['coa'])} a year, including tuition ({usd(SC['tuition_in'])}), housing, food and books. "
-                                                         "After grants and scholarships, families pay much less, and lower-income families pay the least.")
-              + table(["Family income", "Average net price per year"], [[a, usd(b)] for a, b in SC["net_by_income"]] + [["All incomes", usd(SC["net_avg"])]])
-              + p("<small>Average net price for Washington residents who receive federal financial aid, after grants and scholarships. Your own number depends on your family: use WSU's net price calculator. [TBD: link]</small>"))
-     + sec("Out-of-state students", p(f"Out-of-state tuition is {usd(SC['tuition_out'])} a year, but most engineering students from western states do not pay it. "
-                                       "Students from Western Undergraduate Exchange (WUE) states can combine the WUE Distinguished Cougar Award with Voiland College's WUEE Scholarship, an extra $2,000 a year. Together they close the gap with in-state tuition. [VERIFY: amounts each year]"))
-     + sec("Scholarships from one application", ul(["<strong>Distinguished Dean's Scholarship:</strong> full tuition, renewable for up to four years",
-                                                    "<strong>Dean's Scholarship:</strong> more than 300 awarded each year to incoming first-year and transfer students",
-                                                    "<strong>WUEE Scholarship:</strong> $2,000 a year for out-of-state engineering and computer science students"])
-           + p("One form, the WSU General Scholarship Application, covers all three. Priority deadline: January 31. " + L("@@/paying-for-school/scholarships/", "Scholarship details") + "."))
-     + sec("What graduates earn and owe", p("In every engineering and computing major with data, median first-year earnings are more than three times the median federal loan debt. Typical loan payments are about $200 to $270 a month.")
-           + table(["Major", "Median earnings, 1 year out", "Median federal loan debt", "Typical monthly payment"],
-                   [[m, usd(e), usd(dbt), (usd(pay) if pay else "Not reported")] for m, _, e, dbt, pay in SC_MAJORS])
-           + p("<small>WSU graduates who received federal aid, working and not enrolled one year after graduating. Construction Management is reported under the federal category Construction Engineering Technology. Interior Design and Landscape Architecture are not shown because the federal data groups them with other WSU programs. Payment is the standard 10-year federal estimate.</small>")
-           + p("In the largest majors, students who received Pell Grants earn about the same as everyone else: in Mechanical Engineering, $78,564 compared with $78,276."))
-     + sec("Earn while you learn", ul(["<strong>ProPEL:</strong> paid internships and co-ops for academic credit, while you stay a full-time student. " + L("@@/careers/internships-propel/", "ProPEL"),
-                                       "<strong>Micro-internships:</strong> paid short projects through Parker Dewey, often remote.",
-                                       "<strong>Student roles:</strong> peer tutor, first-year peer coordinator, Peer Career Guide and Wellness peer supporter. [VERIFY: which roles are paid]"]))
-     + sec("Free support is part of the price", p("Tutoring, advising, mentoring, career coaching, the FIZ maker space and the Wellness Center are free to every Voiland College student. Staying on track to graduate on time is one of the biggest ways to keep college affordable.")
-           + p(L("@@/first-year-transfer/first-year-program/", "First-Year Program") + ", " + L("@@/academic-help/tutoring/", "Tutoring") + ", " + L("@@/careers/", "Career Services") + "."))
+     body=sec("Cost per year", table(["", "WSU Pullman", "UW Seattle", "Difference"], [
+                ["Cost of attendance (Washington resident)", usd(SC["coa"]), usd(UW["coa"]), gap(SC["coa"], UW["coa"])],
+                ["In-state tuition", usd(SC["tuition_in"]), usd(UW["tuition_in"]), gap(SC["tuition_in"], UW["tuition_in"])],
+                ["Out-of-state tuition", usd(SC["tuition_out"]), usd(UW["tuition_out"]), gap(SC["tuition_out"], UW["tuition_out"])],
+                ["Average net price after grants", usd(SC["net_avg"]), usd(UW["net_avg"]), gap(SC["net_avg"], UW["net_avg"])]])
+              + p("Cost of attendance adds housing, food, books and transportation to tuition. Living in Pullman instead of Seattle is most of the difference."))
+     + sec("What families pay, by income", table(["Family income", "WSU Pullman", "UW Seattle", "Difference"],
+                [[lab, usd(w), usd(u), gap(w, u)] for (lab, w), u in zip(SC["net_by_income"], UW["net_by_income"])])
+           + p("<small>Average net price per year for Washington residents receiving federal aid, after grants and scholarships. Every family's number is different: run both schools' net price calculators before deciding. [TBD: links]</small>"))
+     + sec("Out-of-state students", p(f"WSU's out-of-state tuition is {usd(UW['tuition_out'] - SC['tuition_out'])} a year less than UW's before any aid. "
+                                       "Engineering students from WUE states can also combine the WUE Distinguished Cougar Award with Voiland College's $2,000 WUEE Scholarship, which together close the gap with WSU's in-state tuition. [VERIFY: amounts each year]"))
+     + sec("What graduates earn and owe, by major", table(["Major", "WSU first-year earnings", "UW first-year earnings", "Earnings", "WSU median debt", "UW median debt"],
+                [[m, usd(we), usd(ue), gap(we, ue, lower_is_better=False), usd(wd), usd(ud)] for m, we, ue, wd, ud in CMP_MAJORS])
+           + p("Mechanical, civil and electrical engineering graduates earn about the same at both schools. UW graduates borrow less, and UW computer science and computer engineering graduates start much higher, many of them in Seattle's tech industry.")
+           + p("<small>Median earnings one year after graduating, for graduates who received federal aid and are working. Median federal loan debt at graduation. Construction Management and Architecture are left out because the two schools report them under different federal categories.</small>"))
+     + sec("Getting in", p(f"WSU admits about {round(SC['admit'] * 100)} percent of applicants and UW Seattle about {round(UW['admit'] * 100)} percent. "
+                           "Admission to a specific engineering major works differently at each school; ask both how and when you would enter your major. [VERIFY: current Voiland and UW major admission policies]"))
+     + sec("What comes with tuition at Voiland College", ul(["Free drop-in tutoring, advising, mentoring and career coaching",
+                                                            "ProPEL: credit for paid internships while you stay a full-time student",
+                                                            "Scholarships from one application, including full-tuition Distinguished Dean's awards",
+                                                            "The FIZ maker space and 40+ student clubs"]))
      + sec("Comparing offers? Ask every school", check(["What is our net price after grants, not the sticker price?", "Do the scholarships renew every year, and what does renewal require?",
-                                                        "Can I earn credit for a paid internship without falling behind?", "What do graduates in my major earn in their first year?",
-                                                        "What free tutoring and advising come with tuition?"]))
-     + sec("Sources", p(f'Net price, cost of attendance, tuition, earnings and debt: U.S. Department of Education, <a href="{SCORECARD_URL}">College Scorecard</a>, most recent data, retrieved October 29, 2026. '
-                         'Scholarships: Voiland College Student Success scholarships page. Figures change each year; update them every fall.')),
+                                                        "When and how do I get into my major, and what if I'm not admitted?", "What do graduates in my major earn in their first year?",
+                                                        "Can I earn credit for a paid internship without falling behind?"]))
+     + sec("Sources", p(f'U.S. Department of Education College Scorecard, most recent data, retrieved October 29, 2026: <a href="{SCORECARD_URL}">WSU</a> and <a href="{UW_SCORECARD_URL}">UW Seattle</a>. '
+                         'WUE and WUEE: Voiland College Student Success scholarships page. Update every fall.')),
      contact_card=contact("Recruiting", "Future Cougs", VISIT_MAIL, "[TBD]"))
 
-KEYWORDS["cost-and-value"] = "cost costs tuition price afford affordable net price sticker out-of-state wue salary salaries earnings debt loans value worth roi compare"
+KEYWORDS["cost-and-value"] = "uw udub husky huskies seattle university washington compare comparison cost costs tuition price afford affordable net price sticker out-of-state wue salary salaries earnings debt loans value worth roi compare"
 OWNERS["cost-and-value"] = "Recruiting"
-UTIL.insert(1, ("Cost and Value", "cost-and-value"))
-PAGES["visit"]["body"] = PAGES["visit"]["body"] + sec("Wondering about cost?", p("See what families actually pay and what graduates earn: " + L("@@/cost-and-value/", "What Voiland College Really Costs") + "."))
+UTIL.insert(1, ("WSU vs. UW Cost", "cost-and-value"))
+PAGES["visit"]["body"] = PAGES["visit"]["body"] + sec("Wondering about cost?", p("See what families actually pay and what graduates earn: " + L("@@/cost-and-value/", "WSU vs. UW: Cost and Value") + "."))
 PAGES["paying-for-school"]["body"] = PAGES["paying-for-school"]["body"] + p("Comparing schools? See " + L("@@/cost-and-value/", "what Voiland College really costs") + ".")
 
 REDIRECTS = [("/advising/", "academic-help/advising"), ("/tutoring/", "academic-help/tutoring"), ("/tutoring/tutoring-schedule/", "academic-help/tutoring"),
