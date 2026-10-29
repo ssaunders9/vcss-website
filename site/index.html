@@ -16,6 +16,7 @@
 <ul class="today" aria-label="Today at a glance">
  <li><strong>Tutoring</strong> SEH 130, Mon–Fri, <a href="https://tutoring.wsu.edu/">see today's tutors</a></li>
  <li><strong>Career drop-in today</strong> <span id="career-today">SEH 102, see <a href="careers/">hours</a></span></li>
+ <li><strong>Campus visits</strong> <span id="visit-today">Noon Mon to Sat, 2:30 pm Fri</span>, <a href="visit/">sign up</a></li>
  <li><strong>Wellness Center</strong> Daggy Hall, Mon–Fri 9–4, <a href="tel:988">Crisis? Call/text 988</a></li>
 </ul>
 <div class="strip">
@@ -24,6 +25,7 @@
  <section data-autohide="older-than-semester"><h2>News</h2><p><mark class="tbd">[TBD: latest 3 posts; auto-hide older than one semester]</mark></p></section>
 </div>
 <script>(function(){var d={1:"Mon 2–3 pm",2:"Tue 12–1 pm",3:"Wed 3–4 pm",4:"Thu 12–1 pm",5:"Fri 2–3 pm"}[new Date().getDay()];
+var v=document.getElementById("visit-today"),g=new Date().getDay();if(v)v.textContent=g===0?"No visits today":g===5?"Today: noon and 2:30 pm":"Today: noon";
 var e=document.getElementById("career-today");if(e)e.innerHTML=d?"SEH 102, "+d:"None today, <a href=\"careers/\">weekday hours</a>";})();</script></main>
 <footer class="site-footer"><div class="band" aria-hidden="true"></div>
  <div class="foot-main"><h2>More information</h2>
