@@ -842,7 +842,7 @@ FED_CAT = {"Electrical Engineering": "Electrical, Electronics, and Communication
 
 PAYS = [223, 219, 233, 203, 250, 267, 222]   # WSU median monthly federal loan payment: ME, CE, EE, CS, CompE, ChE, Construction (Scorecard)
 
-page("cost-and-value", "WSU Engineering and Architecture Costs Less", summary=(
+page("cost-and-value", "Spend Less, Start Strong at WSU Engineering and Architecture", summary=(
      "Whether you live in Washington or another state, a year at WSU costs less than at the Seattle flagship or the Oregon land-grant, and WSU engineers start at about the same salaries."),
      button=("Plan a visit", "@@/visit/"),
      body='<div class="stat-row">'
@@ -913,7 +913,7 @@ page("cost-and-value", "WSU Engineering and Architecture Costs Less", summary=(
 KEYWORDS["cost-and-value"] = "uw udub husky huskies seattle university washington compare comparison cost costs tuition price afford affordable net price sticker out-of-state wue salary salaries earnings debt loans value worth roi compare"
 OWNERS["cost-and-value"] = "Recruiting"
 UTIL.insert(1, ("Cost and Value", "cost-and-value"))
-PAGES["visit"]["body"] = PAGES["visit"]["body"] + sec("Wondering about cost?", p("See what families actually pay and what graduates earn: " + L("@@/cost-and-value/", "WSU Engineering and Architecture Costs Less") + "."))
+PAGES["visit"]["body"] = PAGES["visit"]["body"] + sec("Wondering about cost?", p("See what families actually pay and what graduates earn: " + L("@@/cost-and-value/", "Spend Less, Start Strong at WSU Engineering and Architecture") + "."))
 PAGES["paying-for-school"]["body"] = PAGES["paying-for-school"]["body"] + p("Comparing schools? See " + L("@@/cost-and-value/", "what WSU Engineering and Architecture costs") + ".")
 
 REDIRECTS = [("/advising/", "academic-help/advising"), ("/tutoring/", "academic-help/tutoring"), ("/tutoring/tutoring-schedule/", "academic-help/tutoring"),
