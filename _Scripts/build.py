@@ -5,8 +5,8 @@ Run:  /config/workspace/.venv/bin/python _Scripts/build.py   (from VCSS_Website/
 Edit content here (or in content.py later); never hand-edit site/*.html.
 Placeholders: [TBD ...] and [VERIFY ...] are auto-highlighted.
 """
-import re, shutil, csv, time
-VERSION = time.strftime("%Y%m%d%H%M%S")
+import re, shutil, csv, hashlib
+VERSION = ""  # set in main() from the CSS hash so unchanged CSS keeps the same cache key
 from pathlib import Path
 from html import escape
 
@@ -497,7 +497,7 @@ def layout(slug, title, main, crumbs=""):
     quick = "".join(f'<li><a href="{url(s, base)}">{t}</a></li>' for t, s in FOOTER_QUICK)
     doc = f"""<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>{escape(title)} | {SITE_TITLE}</title><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet"><meta name="color-scheme" content="light"><link rel="stylesheet" href="{base}css/site.css?v=@@VER@@"></head>
+<title>{escape(title)} | {SITE_TITLE}</title><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet"><meta name="color-scheme" content="light"><meta name="robots" content="noindex, nofollow"><link rel="stylesheet" href="{base}css/site.css?v=@@VER@@"></head>
 <body><a class="skip" href="#main">Skip to content</a>
 <div class="wsu-bar"><div><span>Washington State University</span><ul>{util}</ul></div></div>
 <header class="site-header">
@@ -795,9 +795,12 @@ document.addEventListener('keydown',function(e){if(e.key==='Escape'){closeAll();
 })();"""
 
 def main():
+    global VERSION
+    VERSION = hashlib.md5(CSS.encode()).hexdigest()[:10]
     if SITE.exists(): shutil.rmtree(SITE)
     (SITE / "css").mkdir(parents=True); (SITE / "img").mkdir()
     (SITE / "css" / "site.css").write_text(CSS)
+    (SITE / "robots.txt").write_text("User-agent: *\nDisallow: /\n")  # draft site: remove before launch
     for n, (w, h, bg, t) in IMAGES.items():
         (SITE / "img" / n).write_text(SVG.format(w=w, h=h, bg=bg, fg="#fff", fs=h // 10 + 8, t=t))
     if ASSETS.exists():  # real photos dropped in Assets/ override placeholders

@@ -4,11 +4,11 @@ Static skeleton for the Voiland College Student Resources site (`vcea.wsu.edu/st
 
 - `_Scripts/build.py` — all page content + templates; run `.venv/bin/python _Scripts/build.py` from this folder. Regenerates `site/`.
 - `site/` — generated output (open `site/index.html`). Don't hand-edit.
-- `Assets/` — drop real photos here named like the placeholders (e.g. `hero.svg` → use same filename, or edit `IMAGES`/img refs); they overwrite placeholders in `site/img/`.
+- `Assets/` — real photos (optimized copies; originals in `Assets/source/`). Anything here is copied into `site/img/` on build and overrides a same-named placeholder.
 - `redirects.csv` / `site/_redirects` — old → new map.
 
 `[TBD]` (yellow) and `[VERIFY]` (red) mark content the team must supply or confirm.
-Images are placeholders: vcea.wsu.edu blocks automated downloads (HTTP 403), so use WSU-approved photography.
+Remaining images are placeholders. The site is a draft: pages are `noindex` and `site/robots.txt` blocks crawlers until launch. See `AGENTS.md` for conventions.
 
 ## GitHub Pages
 
