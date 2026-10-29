@@ -556,17 +556,17 @@ def render(slug, d):
         main += '<aside class="related"><h2>Related</h2><ul>' + "".join(f'<li><a href="@@/{s}/">{t}</a></li>' for t, s in d["related"][:4]) + "</ul></aside>"
     return layout(slug, d["title"], main, crumbs)
 
-ICON = {'📚': 'M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2zM4 21V5M9 7h6', '🧭': 'M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zM15.5 8.5l-2 5-5 2 2-5z', '💼': 'M3 8h18v12H3zM9 8V5h6v3M3 13h18', '🎓': 'M12 3v18M16 7c0-1.7-1.8-3-4-3s-4 1.3-4 3 1.8 2.5 4 3 4 1.3 4 3-1.8 3-4 3-4-1.3-4-3', '🤝': 'M9 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM3 20c0-3 2.7-5 6-5s6 2 6 5M17 10a2.5 2.5 0 1 0 0-5M18 15c2 .4 3 2 3 5', '🛠️': 'M14 6a4 4 0 0 0 4 4l-9 9a2 2 0 0 1-3-3l9-9a4 4 0 0 0-1-1zM4 20l3-3', '💚': 'M12 20s-8-5-8-11a4.5 4.5 0 0 1 8-2.5A4.5 4.5 0 0 1 20 9c0 6-8 11-8 11z', '👋': 'M5 21V4M5 4h12l-2 4 2 4H5'}
+ICON = {'book': 'M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2zM4 21V5M9 7h6', 'compass': 'M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zM15.5 8.5l-2 5-5 2 2-5z', 'brief': 'M3 8h18v12H3zM9 8V5h6v3M3 13h18', 'money': 'M12 3v18M16 7c0-1.7-1.8-3-4-3s-4 1.3-4 3 1.8 2.5 4 3 4 1.3 4 3-1.8 3-4 3-4-1.3-4-3', 'people': 'M9 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM3 20c0-3 2.7-5 6-5s6 2 6 5M17 10a2.5 2.5 0 1 0 0-5M18 15c2 .4 3 2 3 5', 'tool': 'M14 6a4 4 0 0 0 4 4l-9 9a2 2 0 0 1-3-3l9-9a4 4 0 0 0-1-1zM4 20l3-3', 'heart': 'M12 20s-8-5-8-11a4.5 4.5 0 0 1 8-2.5A4.5 4.5 0 0 1 20 9c0 6-8 11-8 11z', 'flag': 'M5 21V4M5 4h12l-2 4 2 4H5'}
 
 def render_home():
-    tasks = [("📚", "Get help with a class", "Free drop-in tutoring, SEH 130", "academic-help/tutoring"),
-             ("🧭", "Meet with my advisor", "Find your advisor, plan your degree", "academic-help/advising"),
-             ("💼", "Find an internship or job", "Coaching, fairs, ProPEL", "careers"),
-             ("🎓", "Pay for school", "Scholarships and emergency aid", "paying-for-school/scholarships"),
-             ("🤝", "Join a club", "40+ student clubs", "get-involved/clubs"),
-             ("🛠️", "Build something", "FIZ, shops, fabrication labs", "get-involved/maker-spaces"),
-             ("💚", "Take a break or talk to someone", "Wellness Center, Daggy Hall", "wellness"),
-             ("👋", "New to Voiland College?", "First-year and transfer start here", "first-year-transfer")]
+    tasks = [('book', "Get help with a class", "Free tutoring", "academic-help/tutoring"),
+             ('compass', "Meet with my advisor", "Plan your degree", "academic-help/advising"),
+             ('brief', "Find an internship or job", "Coaching and fairs", "careers"),
+             ('money', "Pay for school", "Scholarships and aid", "paying-for-school/scholarships"),
+             ('people', "Join a club", "40+ student clubs", "get-involved/clubs"),
+             ('tool', "Build something", "FIZ and shops", "get-involved/maker-spaces"),
+             ('heart', "Take a break", "Talk to someone at Wellness", "wellness"),
+             ('flag', "New to Voiland College?", "Start here", "first-year-transfer")]
     t = "".join(f'<li><a class="task" href="@@/{s}/"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="{ICON[i]}"/></svg><span><strong>{x}</strong><small>{h}</small></span></a></li>' for i, x, h, s in tasks)
     main = f"""<section class="hero-slim"><div><h1>{SITE_TITLE}</h1>
 <p class="lede">Free support to help you succeed in class, on your career path, and beyond.</p></div></section>
@@ -806,6 +806,14 @@ nav[aria-label=Primary]>ul.util-mobile{display:none}
 @media (max-width:1040px){.today{grid-template-columns:repeat(2,1fr)}}
 @media (max-width:560px){.today{grid-template-columns:1fr}}
 .today li{gap:3px}.today span{display:block}.today a{font-weight:600;font-size:.85rem}
+/* calmer home tiles: one title line, one hint line, no chevron */
+.tasks{gap:12px}
+.task{line-height:1.3;gap:14px;padding:16px 18px;min-height:78px;box-shadow:0 1px 4px rgba(0,0,0,.14)}
+.task:after{display:none}
+.task .ico{width:40px;height:40px;padding:10px}
+.task strong{font-size:1rem;font-weight:700}
+.task small{font-size:.8rem;margin-top:2px;color:var(--gray)}
+.task:hover{box-shadow:0 3px 10px rgba(0,0,0,.2)}
 """
 
 JS = """(function(){

@@ -210,3 +210,11 @@ nav[aria-label=Primary]>ul.util-mobile{display:none}
 @media (max-width:1040px){.today{grid-template-columns:repeat(2,1fr)}}
 @media (max-width:560px){.today{grid-template-columns:1fr}}
 .today li{gap:3px}.today span{display:block}.today a{font-weight:600;font-size:.85rem}
+/* calmer home tiles: one title line, one hint line, no chevron */
+.tasks{gap:12px}
+.task{line-height:1.3;gap:14px;padding:16px 18px;min-height:78px;box-shadow:0 1px 4px rgba(0,0,0,.14)}
+.task:after{display:none}
+.task .ico{width:40px;height:40px;padding:10px}
+.task strong{font-size:1rem;font-weight:700}
+.task small{font-size:.8rem;margin-top:2px;color:var(--gray)}
+.task:hover{box-shadow:0 3px 10px rgba(0,0,0,.2)}
